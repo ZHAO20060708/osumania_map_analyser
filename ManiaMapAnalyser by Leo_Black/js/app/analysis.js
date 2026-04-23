@@ -1,5 +1,6 @@
 import { runSunnyEstimatorFromText } from "../estimator/sunnyEstimator.js";
 import { runDanielEstimatorFromText } from "../estimator/danielEstimator.js";
+import { runAzusaEstimatorFromText } from "../estimator/azusaEstimator.js";
 import {
     applyCompanellaToMixedResult,
     runMixedEstimatorFromText,
@@ -57,6 +58,7 @@ import {
     setNumericDifficultyValue,
     showDiffGraphError,
     setGraphLoading,
+    updateDiffTextVisibility,
 } from "./graph.js";
 import {
     currentEstimatorAlgorithm,
@@ -202,6 +204,7 @@ function shouldShowBodySkeletonDuringExpand(previousCardHeight, activeContentBar
 }
 
 export function resetReworkDisplay() {
+    state.actualEstimatorAlgorithm = state.estimatorAlgorithm;
     setNumericDifficultyValue(null);
     setForceHideNumericDifficulty(false);
     reworkStarEl.textContent = "-";
@@ -338,19 +341,41 @@ export async function fetchBeatmapFile(reason) {
                 withGraph: state.diffText === "Graph" || activeContentBar === "Graph",
             };
 
-            const sunnyBaseline = runSunnyEstimatorFromText(rawText, estimatorOptions);
-            let selectedRework = sunnyBaseline;
-            let nextEstDiff = sunnyBaseline.estDiff;
-            let nextNumericDifficulty = sunnyBaseline.numericDifficulty;
-            let nextNumericDifficultyHint = sunnyBaseline.numericDifficultyHint;
+            const azusaOptions = {
+                ...estimatorOptions,
+                forceSunnyReferenceHo: state.azusaSunnyReferenceHo,
+            };
+
+            let selectedRework = null;
+            let nextEstDiff = null;
+            let nextNumericDifficulty = null;
+            let nextNumericDifficultyHint = null;
+            let actualEstimatorAlgorithm = estimatorAlgorithm;
+
+            const isValidEstimatorResult = (result) => Boolean(result)
+                && Number.isFinite(result.star)
+                && Number.isFinite(result.numericDifficulty)
+                && typeof result.estDiff === "string";
 
             if (estimatorAlgorithm === "Daniel") {
                 selectedRework = runDanielEstimatorFromText(rawText, estimatorOptions);
                 nextEstDiff = selectedRework.estDiff;
                 nextNumericDifficulty = selectedRework.numericDifficulty;
                 nextNumericDifficultyHint = selectedRework.numericDifficultyHint;
+            } else if (estimatorAlgorithm === "Azusa") {
+                selectedRework = runAzusaEstimatorFromText(rawText, azusaOptions);
+                if (!isValidEstimatorResult(selectedRework)) {
+                    selectedRework = runSunnyEstimatorFromText(rawText, estimatorOptions);
+                    actualEstimatorAlgorithm = "Sunny";
+                }
+                nextEstDiff = selectedRework.estDiff;
+                nextNumericDifficulty = selectedRework.numericDifficulty;
+                nextNumericDifficultyHint = selectedRework.numericDifficultyHint;
             } else if (estimatorAlgorithm === "Companella") {
-                selectedRework = sunnyBaseline;
+                selectedRework = runSunnyEstimatorFromText(rawText, estimatorOptions);
+                nextEstDiff = selectedRework.estDiff;
+                nextNumericDifficulty = selectedRework.numericDifficulty;
+                nextNumericDifficultyHint = selectedRework.numericDifficultyHint;
                 pendingCompanellaEstimate = Number(selectedRework.columnCount) === 4;
             } else if (estimatorAlgorithm === "Mixed") {
                 selectedRework = runMixedEstimatorFromText(rawText, estimatorOptions);
@@ -358,15 +383,22 @@ export async function fetchBeatmapFile(reason) {
                 nextNumericDifficulty = selectedRework.numericDifficulty;
                 nextNumericDifficultyHint = selectedRework.numericDifficultyHint;
                 pendingMixedCompanellaContext = selectedRework.mixedCompanellaPlan || null;
+            } else {
+                selectedRework = runSunnyEstimatorFromText(rawText, estimatorOptions);
+                nextEstDiff = selectedRework.estDiff;
+                nextNumericDifficulty = selectedRework.numericDifficulty;
+                nextNumericDifficultyHint = selectedRework.numericDifficultyHint;
             }
 
             rework = selectedRework;
+            state.actualEstimatorAlgorithm = actualEstimatorAlgorithm;
             if (isStaleRequest()) return;
 
             showNumericStarValue(rework.star);
             resolvedEstDiff = nextEstDiff;
             resolvedNumericDifficulty = nextNumericDifficulty;
             resolvedNumericDifficultyHint = nextNumericDifficultyHint;
+            updateDiffTextVisibility();
 
             if (state.diffText === "Graph" || activeContentBar === "Graph") {
                 if (!GRAPH_SUPPORTED_KEY_SET.has(rework.columnCount)) {

@@ -1,4 +1,5 @@
 import { BAND_META } from "../stats.js";
+import { t } from "../i18n.js";
 import { dom, state } from "./state.js";
 import {
     escapeHtml,
@@ -61,23 +62,32 @@ export function updateSourceHint(extra = "") {
 
     const segments = [];
     if (remoteCount > 0) {
-        segments.push(`Remote ${remoteCount}`);
+        segments.push(t("index.meta.sourceRemoteCount", "Remote {count}", { count: remoteCount }));
     }
     if (localCount > 0) {
-        segments.push(`Local ${localCount}`);
+        segments.push(t("index.meta.sourceLocalCount", "Local {count}", { count: localCount }));
     }
     if (!segments.length) {
-        segments.push("No Datasets");
+        segments.push(t("index.meta.sourceNone", "No Datasets"));
     }
 
     const suffix = extra ? ` | ${extra}` : "";
-    dom.sourceHint.textContent = `Source: ${segments.join(" + ")}${suffix}`;
+    dom.sourceHint.textContent = t("index.meta.sourceHint", "Source: {segments}{suffix}", {
+        segments: segments.join(" + "),
+        suffix,
+    });
 }
 
 export function renderAlgorithmOptions() {
     const previous = state.currentAlgorithm;
 
     dom.algorithmSelect.innerHTML = "";
+
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    emptyOption.textContent = "";
+    dom.algorithmSelect.appendChild(emptyOption);
+
     for (const algorithm of state.algorithms) {
         const option = document.createElement("option");
         option.value = algorithm;
@@ -86,17 +96,18 @@ export function renderAlgorithmOptions() {
     }
 
     if (!state.algorithms.length) {
-        state.currentAlgorithm = null;
+        state.currentAlgorithm = "";
+        dom.algorithmSelect.value = "";
         return;
     }
 
     if (previous && state.algorithms.includes(previous)) {
         state.currentAlgorithm = previous;
     } else {
-        state.currentAlgorithm = state.algorithms[0];
+        state.currentAlgorithm = "";
     }
 
-    dom.algorithmSelect.value = state.currentAlgorithm;
+    dom.algorithmSelect.value = state.currentAlgorithm || "";
 }
 
 export function renderCompareOptions() {
@@ -105,7 +116,7 @@ export function renderCompareOptions() {
 
     const offOption = document.createElement("option");
     offOption.value = "";
-    offOption.textContent = "Off";
+    offOption.textContent = t("common.off", "Off");
     dom.compareAlgorithmSelect.appendChild(offOption);
 
     const candidates = state.algorithms.filter((algorithm) => algorithm !== state.currentAlgorithm);
@@ -139,7 +150,7 @@ export function fillPatternFilter(rows) {
 
     const allOption = document.createElement("option");
     allOption.value = "all";
-    allOption.textContent = "All";
+    allOption.textContent = t("common.all", "All");
     dom.patternFilter.appendChild(allOption);
 
     for (const pattern of patterns) {
@@ -161,7 +172,7 @@ export function fillSubPatternFilter(rows) {
 
     const allOption = document.createElement("option");
     allOption.value = "all";
-    allOption.textContent = "All";
+    allOption.textContent = t("common.all", "All");
     dom.subPatternFilter.appendChild(allOption);
 
     for (const subPattern of subPatterns) {
@@ -178,36 +189,36 @@ export function updateSummary(summary) {
     dom.totalMapsValue.textContent = String(summary.totalRows);
     dom.validMapsValue.textContent = String(summary.validRows);
 
-    dom.maeValue.textContent = formatNumber(summary.metrics.mae, 3);
-    dom.rmseValue.textContent = formatNumber(summary.metrics.rmse, 3);
-    dom.biasValue.textContent = formatSigned(summary.metrics.bias, 3);
-    dom.medianValue.textContent = formatNumber(summary.metrics.medianAbs, 3);
+    dom.maeValue.textContent = formatNumber(summary.metrics.mae, 2);
+    dom.rmseValue.textContent = formatNumber(summary.metrics.rmse, 2);
+    dom.biasValue.textContent = formatSigned(summary.metrics.bias, 2);
+    dom.medianValue.textContent = formatNumber(summary.metrics.medianAbs, 2);
     dom.coverageValue.textContent = formatPercent(summary.metrics.coverage);
-    dom.p90Value.textContent = formatNumber(summary.metrics.p90Abs, 3);
-    dom.maxUnderrateValue.textContent = formatSigned(summary.metrics.maxUnderrate, 3);
-    dom.maxOverrateValue.textContent = formatSigned(summary.metrics.maxOverrate, 3);
+    dom.p90Value.textContent = formatNumber(summary.metrics.p90Abs, 2);
+    dom.maxUnderrateValue.textContent = formatSigned(summary.metrics.maxUnderrate, 2);
+    dom.maxOverrateValue.textContent = formatSigned(summary.metrics.maxOverrate, 2);
 
     dom.exactRateValue.textContent = formatPercent(summary.bandRates.exact);
     dom.closeRateValue.textContent = formatPercent(summary.bandRates.close);
     dom.moderateRateValue.textContent = formatPercent(summary.bandRates.moderate);
     dom.missRateValue.textContent = formatPercent(summary.bandRates.miss);
 
-    dom.exactCountValue.textContent = `${summary.bandCounts.exact} maps`;
-    dom.closeCountValue.textContent = `${summary.bandCounts.close} maps`;
-    dom.moderateCountValue.textContent = `${summary.bandCounts.moderate} maps`;
-    dom.missCountValue.textContent = `${summary.bandCounts.miss} maps`;
+    dom.exactCountValue.textContent = t("index.kpi.mapsCount", "{count} maps", { count: summary.bandCounts.exact });
+    dom.closeCountValue.textContent = t("index.kpi.mapsCount", "{count} maps", { count: summary.bandCounts.close });
+    dom.moderateCountValue.textContent = t("index.kpi.mapsCount", "{count} maps", { count: summary.bandCounts.moderate });
+    dom.missCountValue.textContent = t("index.kpi.mapsCount", "{count} maps", { count: summary.bandCounts.miss });
 
     if (dom.trendFitValue) {
         const value = summary.metrics.trendFitPercent;
         dom.trendFitValue.textContent = Number.isFinite(value)
-            ? `Fit: ${Number(value).toFixed(1)}%`
-            : "Fit: -";
+            ? t("index.charts.trend.fit", "Fit: {value}%", { value: Number(value).toFixed(2) })
+            : t("index.charts.trend.fitEmpty", "Fit: -");
     }
 }
 
 function renderInsightList(target, rows, direction) {
     if (!rows.length) {
-        target.innerHTML = '<li class="insight-empty">No maps with valid values.</li>';
+        target.innerHTML = `<li class="insight-empty">${escapeHtml(t("index.insight.empty", "No maps with valid values."))}</li>`;
         return;
     }
 
@@ -218,7 +229,11 @@ function renderInsightList(target, rows, direction) {
                 "<li>",
                 `<strong>${escapeHtml(row.name)}</strong>`,
                 `<span class="muted"> (${escapeHtml(row.pattern || "-")})</span>`,
-                `<br><span class="muted">delta ${sign}${formatNumber(row.delta, 3)} | expected ${formatNumber(row.expected, 3)} | got ${formatNumber(row.got, 3)}</span>`,
+                `<br><span class="muted">${escapeHtml(t("index.insight.detail", "delta {delta} | expected {expected} | got {got}", {
+                    delta: `${sign}${formatNumber(row.delta, 2)}`,
+                    expected: formatNumber(row.expected, 2),
+                    got: formatNumber(row.got, 2),
+                }))}</span>`,
                 "</li>",
             ].join("");
         })
@@ -232,7 +247,7 @@ export function updateInsightLists(summary) {
 
 export function updateCompareSummary(compareSummary) {
     if (!state.compareAlgorithm || !compareSummary) {
-        dom.compareStatusText.textContent = "Comparison disabled.";
+        dom.compareStatusText.textContent = t("index.compare.disabled", "Comparison disabled.");
         dom.compareMatchedValue.textContent = "-";
         dom.compareBaseWinsValue.textContent = "-";
         dom.compareOtherWinsValue.textContent = "-";
@@ -242,13 +257,22 @@ export function updateCompareSummary(compareSummary) {
         return;
     }
 
-    dom.compareStatusText.textContent = `${state.currentAlgorithm}[${state.baseMode}] vs ${state.compareAlgorithm}[${state.compareMode}]`;
+    dom.compareStatusText.textContent = t(
+        "index.compare.status",
+        "{base}[{baseScope}] vs {compare}[{compareScope}]",
+        {
+            base: state.currentAlgorithm,
+            baseScope: state.baseMode,
+            compare: state.compareAlgorithm,
+            compareScope: state.compareMode,
+        },
+    );
     dom.compareMatchedValue.textContent = String(compareSummary.matchedRows);
     dom.compareBaseWinsValue.textContent = String(compareSummary.baseWins);
     dom.compareOtherWinsValue.textContent = String(compareSummary.compareWins);
     dom.compareTieValue.textContent = String(compareSummary.tieCount);
     dom.compareAgreementValue.textContent = formatPercent(compareSummary.agreementRate);
-    dom.compareMaeGapValue.textContent = formatSigned(compareSummary.maeGap, 3);
+    dom.compareMaeGapValue.textContent = formatSigned(compareSummary.maeGap, 2);
 }
 
 export function renderErrorPanel(rows) {
@@ -282,13 +306,17 @@ export function renderErrorPanel(rows) {
     dom.errorMissingCount.textContent = String(missingCount);
 
     if (!errors.length) {
-        dom.errorStatusText.textContent = "No error maps in current algorithm scope.";
+        dom.errorStatusText.textContent = t("index.errors.noneInScope", "No error maps in current algorithm scope.");
         dom.errorTableBody.innerHTML = "";
         dom.errorEmptyState.hidden = false;
         return;
     }
 
-    dom.errorStatusText.textContent = `${errors.length} error maps in current algorithm scope.`;
+    dom.errorStatusText.textContent = t(
+        "index.errors.countInScope",
+        "{count} error maps in current algorithm scope.",
+        { count: errors.length },
+    );
     dom.errorEmptyState.hidden = true;
 
     dom.errorTableBody.innerHTML = errors
@@ -320,8 +348,8 @@ export function renderTable(rows) {
         .map((row) => {
             const bandKey = row._band || "error";
             const bandLabel = bandKey === "error"
-                ? "Error"
-                : (BAND_META[bandKey]?.label || "Miss");
+                ? t("index.errors.errorBand", "Error")
+                : t(`band.${bandKey}`, BAND_META[bandKey]?.label || "Miss");
             const winnerLabel = getWinnerLabel(row.better, Boolean(state.compareAlgorithm));
             const winnerClass = row.better || "na";
             const hasBid = hasValidBid(row);
@@ -354,9 +382,9 @@ export function renderTable(rows) {
                 `<td class="compare-col">${escapeHtml(compareGotText)}</td>`,
                 `<td class="num compare-col">${formatNumber(row.compareDeltaAbs)}</td>`,
                 `<td class="winner ${winnerClass} compare-col">${escapeHtml(winnerLabel)}</td>`,
-                `<td class="actions-col"><div class="row-actions"><a class="icon-btn" href="${escapeHtml(searchUrl)}" target="_blank" rel="noopener noreferrer" title="Search beatmapsets">🔎</a>${hasBid
-                    ? `<a class="icon-btn" href="${escapeHtml(downloadUrl)}" target="_blank" rel="noopener noreferrer" title="Download .osu">⬇</a>`
-                    : '<span class="icon-btn disabled" title="No bid">⬇</span>'}</div></td>`,
+                `<td class="actions-col"><div class="row-actions"><a class="icon-btn" href="${escapeHtml(searchUrl)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t("index.table.actions.search", "Search beatmapsets"))}">🔎</a>${hasBid
+                    ? `<a class="icon-btn" href="${escapeHtml(downloadUrl)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(t("index.table.actions.download", "Download .osu"))}">⬇</a>`
+                    : `<span class="icon-btn disabled" title="${escapeHtml(t("index.table.actions.noBid", "No bid"))}">⬇</span>`}</div></td>`,
                 "</tr>",
             ].join("");
         })
@@ -384,7 +412,17 @@ export function setReadyDatasetInfo(summary, errorCount) {
         : "";
 
     setDatasetInfo(
-        `${state.currentAlgorithm}[${state.baseMode}]${compareText}`
-        + ` | Maps=${summary.totalRows} | Errors=${errorCount} | Generated At ${generatedAtText}`,
+        t(
+            "index.meta.datasetInfo",
+            "{base}[{baseScope}]{compare} | Maps={maps} | Errors={errors} | Generated At {generatedAt}",
+            {
+                base: state.currentAlgorithm,
+                baseScope: state.baseMode,
+                compare: compareText,
+                maps: summary.totalRows,
+                errors: errorCount,
+                generatedAt: generatedAtText,
+            },
+        ),
     );
 }

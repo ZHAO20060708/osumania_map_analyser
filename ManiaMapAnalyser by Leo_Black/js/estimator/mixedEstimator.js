@@ -1,5 +1,6 @@
 import { runDanielEstimatorFromText } from "./danielEstimator.js";
 import { runSunnyEstimatorFromText } from "./sunnyEstimator.js";
+import { runAzusaEstimatorFromText } from "./azusaEstimator.js";
 
 const MIXED_SUPPORTED_KEYS = new Set([4, 6, 7]);
 
@@ -79,6 +80,27 @@ function tryRunDanielFallback(osuText, options) {
     }
 }
 
+function tryRunAzusaFallback(osuText, options) {
+    try {
+        return runAzusaEstimatorFromText(osuText, options);
+    } catch {
+        return null;
+    }
+}
+
+function canUseAzusaResult(result) {
+    if (!result || Number(result.columnCount) !== 4) {
+        return false;
+    }
+
+    const estDiff = String(result.estDiff ?? "").trim();
+    if (!estDiff || /^Invalid\b/i.test(estDiff)) {
+        return false;
+    }
+
+    return true;
+}
+
 export function runMixedEstimatorFromText(osuText, options = {}) {
     const sunnyBaseline = runSunnyEstimatorFromText(osuText, options);
     const columnCount = Number(sunnyBaseline.columnCount);
@@ -107,16 +129,28 @@ export function runMixedEstimatorFromText(osuText, options = {}) {
 
     if (mixedModeTag === "RC") {
         if (!inEnabled) {
-            const danielResult = tryRunDanielFallback(osuText, options);
-            const canUseDaniel = danielResult
-                && Number(danielResult.columnCount) === 4
-                && !isDanielTooLowDifficulty(danielResult.estDiff);
+            const azusaResult = tryRunAzusaFallback(osuText, {
+                ...options,
+                forceSunnyReferenceHo: false,
+                precomputedSunnyResult: sunnyBaseline,
+            });
+            if (canUseAzusaResult(azusaResult)) {
+                selectedRework = azusaResult;
+                estDiff = azusaResult.estDiff;
+                numericDifficulty = azusaResult.numericDifficulty;
+                numericDifficultyHint = azusaResult.numericDifficultyHint;
+            } else {
+                const danielResult = tryRunDanielFallback(osuText, options);
+                const canUseDaniel = danielResult
+                    && Number(danielResult.columnCount) === 4
+                    && !isDanielTooLowDifficulty(danielResult.estDiff);
 
-            if (canUseDaniel) {
-                selectedRework = danielResult;
-                estDiff = danielResult.estDiff;
-                numericDifficulty = danielResult.numericDifficulty;
-                numericDifficultyHint = danielResult.numericDifficultyHint;
+                if (canUseDaniel) {
+                    selectedRework = danielResult;
+                    estDiff = danielResult.estDiff;
+                    numericDifficulty = danielResult.numericDifficulty;
+                    numericDifficultyHint = danielResult.numericDifficultyHint;
+                }
             }
         }
     } else {

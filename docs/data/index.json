@@ -1,6 +1,7 @@
 {
-  "generatedAt": "2026-04-20T03:24:40.839Z",
+  "generatedAt": "2026-04-23T10:11:28.059Z",
   "algorithms": [
+    "Azusa",
     "Companella",
     "Daniel",
     "Legacy",
@@ -9,16 +10,22 @@
   ],
   "files": [
     {
+      "fileName": "Azusa.csv",
+      "algorithm": "Azusa",
+      "sizeBytes": 27322,
+      "modifiedAt": "2026-04-23T10:11:28.046Z"
+    },
+    {
       "fileName": "Companella.csv",
       "algorithm": "Companella",
-      "sizeBytes": 21739,
-      "modifiedAt": "2026-04-20T03:24:40.825Z"
+      "sizeBytes": 23575,
+      "modifiedAt": "2026-04-23T07:43:39.287Z"
     },
     {
       "fileName": "Daniel.csv",
       "algorithm": "Daniel",
-      "sizeBytes": 27434,
-      "modifiedAt": "2026-04-20T03:24:27.888Z"
+      "sizeBytes": 29415,
+      "modifiedAt": "2026-04-23T07:43:24.834Z"
     },
     {
       "fileName": "Legacy.csv",
@@ -29,14 +36,14 @@
     {
       "fileName": "Mixed.csv",
       "algorithm": "Mixed",
-      "sizeBytes": 21770,
-      "modifiedAt": "2026-04-20T03:24:15.639Z"
+      "sizeBytes": 23611,
+      "modifiedAt": "2026-04-23T07:43:10.572Z"
     },
     {
       "fileName": "Sunny.csv",
       "algorithm": "Sunny",
-      "sizeBytes": 21739,
-      "modifiedAt": "2026-04-20T03:24:23.439Z"
+      "sizeBytes": 23575,
+      "modifiedAt": "2026-04-23T07:43:19.503Z"
     }
   ]
 }

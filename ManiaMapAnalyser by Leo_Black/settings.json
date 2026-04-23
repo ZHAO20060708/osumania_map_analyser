@@ -1,5 +1,37 @@
 [
 	{
+		"uniqueID":"hLinks",
+		"type":"header",
+		"title":"Links",
+		"description":"",
+		"options":[],
+		"value":""
+	},
+	{
+		"uniqueID":"GuideButton",
+		"type":"button",
+		"title":"Settings Guide",
+		"description":"Go to the repo's readme.md file for settings usage instructions and more information.",
+		"options":[],
+		"value":"https://github.com/LeoBlackMT/osumania_map_analyser/blob/main/README_EN.md#settings"
+	},
+	{
+		"uniqueID":"IssueButton",
+		"type":"button",
+		"title":"Report Issue",
+		"description":"Report any bugs or suggest features on the GitHub.",
+		"options":[],
+		"value":"https://github.com/LeoBlackMT/osumania_map_analyser/issues/new"
+	},
+	{
+		"uniqueID":"BenchmarkButton",
+		"type":"button",
+		"title":"Benchmark Results",
+		"description":"View estimator algorithm's benchmark results and performance data.",
+		"options":[],
+		"value":"https://leoblackmt.github.io/osumania_map_analyser"
+	},
+	{
 		"uniqueID":"hVisual",
 		"type":"header",
 		"title":"Visual Customization",
@@ -178,6 +210,7 @@
 		"description": "Select estimator algorithm.",
 		"options": [
 			"Mixed",
+			"Azusa",
 			"Sunny",
 			"Daniel",
 			"Companella"
@@ -253,5 +286,13 @@
 		"description": "Allow SV-based mode tag/category detection logic.",
 		"options": [],
 		"value": false
+	},
+		{
+		"uniqueID": "azusaSunnyReferenceHo",
+		"type": "checkbox",
+		"title": "Azusa Sunny Reference Force HO",
+		"description": "When enabled, Azusa always calls Sunny reference with cvtFlag=HO to remove LN inflation from partial LN maps.",
+		"options": [],
+		"value": true
 	}
 ]

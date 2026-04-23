@@ -53,7 +53,7 @@ export function formatNumber(value, digits = 2) {
 }
 
 export function formatPercent(value) {
-    return `${Number(value || 0).toFixed(1)}%`;
+    return `${Number(value || 0).toFixed(2)}%`;
 }
 
 export function formatSigned(value, digits = 2) {
