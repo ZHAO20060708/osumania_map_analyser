@@ -4,6 +4,7 @@
 > **Translation Note**: This document was translated from Chinese to English with the assistance of an AI language model. While efforts have been made to ensure accuracy, please refer to the original Chinese version if any ambiguity arises.
 ****
 This repository is an in-game overlay (pp counter) for [tosu](https://tosu.app), providing real-time support for osu!mania (4/6/7K) across both lazer and stable with multiple mods. It offers estimated difficulty analysis, RC/LN pattern analysis, customizable Etterna version for MSD calculation, difficulty charts, and pause detection.
+
 ![Features](img/features.gif)
 
 Estimation Algorithm Benchmark: Please visit [here](https://leoblackmt.github.io/osumania_map_analyser/) to see the performance comparison of estimation algorithms based on real beatmap data.
@@ -87,7 +88,8 @@ Note: It is recommended to start with the default settings and then adjust accor
     - **Vibro Detection**: Whether to enable vibro detection.
         - Recommended: When enabled, the plugin will detect if a beatmap is a vibro map and display it as "Vibro" in the estimated difficulty; otherwise, you will see an extremely inflated difficulty estimate.
     - **Estimator Algorithm**: Choose the algorithm used for difficulty estimation.
-        - Mixed: (Recommended) A hybrid algorithm combining the three below, offering relatively higher accuracy. Automatically selects the algorithm best suited for the current beatmap.
+        - Mixed: (Recommended) A hybrid algorithm combining the four below, offering relatively higher accuracy. Automatically selects the algorithm best suited for the current beatmap.
+        - Azusa: A Daniel-based algorithm tailored for 4K RC, incorporating adjustments based on the Suuny algorithm. It performs well in RC scenarios but is not suitable for LN-dominant beatmaps.
         - Suuny: Maps directly to Dan star ratings using Suuny Rework, compatible with LN and RC Dans for 4/6/7K.
         - [Daniel](https://thebagelofman.github.io/Daniel/): Uses the Daniel algorithm for estimation, suitable for 4K Reform Alpha and above Dan difficulties.
         - [Companella](https://github.com/Leinadix/companella): Uses the Companella algorithm, suitable for 4K Reform Delta+ and below Dan difficulties.
@@ -104,6 +106,7 @@ Note: It is recommended to start with the default settings and then adjust accor
 - **Network Configuration**:
     - **WebSocket Endpoint**: Configure the address and port of the WebSocket server.
         - Ensure this address and port match those set in-game to receive data from the in-game overlay.
+        - The same host:port is also used to build the beatmap file endpoint: `http://{host:port}/files/beatmap/file`.
         - Adjusting this setting allows you to use the plugin on other devices on the same local network, such as displaying analysis results on a mobile phone or tablet.
         - The default value is `localhost:24050`
 - **Debug Settings**:
@@ -112,6 +115,9 @@ Note: It is recommended to start with the default settings and then adjust accor
     - **SV Detection**: Whether to enable SV beatmap detection (experimental).
         - When enabled, an SV tag will be displayed in the bottom left corner.
         - This feature is experimental and may produce false positives or misses.
+    - **Azusa Sunny Reference Force HO**
+        - When enabled, the Azusa algorithm will be forced to treat the beatmap as a pure RC map.
+        - It is enabled by default; please do not disable it casually. 
 
 ## References
 - [tosu](https://tosu.app): The runtime environment and basic framework for this plugin.

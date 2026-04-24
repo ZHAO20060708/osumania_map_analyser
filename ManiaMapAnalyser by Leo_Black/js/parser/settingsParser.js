@@ -36,6 +36,7 @@ export function normalizeEstimatorAlgorithmValue(value) {
     }
 
     const lowered = value.trim().toLowerCase();
+    if (lowered === "azusa") return "Azusa";
     if (lowered === "mixed") return "Mixed";
     if (lowered === "mix") return "Mixed";
     if (lowered === "sunny") return "Sunny";
@@ -294,6 +295,11 @@ export function createSettingsParsers(appConfig) {
         return "Sunny";
     }
 
+    function parseAzusaSunnyReferenceHoValue(settingsPayload) {
+        const value = extractSettingValue(settingsPayload, "azusaSunnyReferenceHo");
+        return normalizeBooleanSetting(value, appConfig.defaults.azusaSunnyReferenceHo);
+    }
+
     function parseEtternaVersionValue(settingsPayload) {
         const value = extractSettingValue(settingsPayload, "etternaVersion");
         const normalized = normalizeEtternaVersionValue(value);
@@ -462,6 +468,7 @@ export function createSettingsParsers(appConfig) {
         parseAutoModeValue,
         parseUseDanielAlgorithmValue,
         parseEstimatorAlgorithmValue,
+        parseAzusaSunnyReferenceHoValue,
         parseEtternaVersionValue,
         parseCompanellaEtternaVersionValue,
         parseEnablePauseDetectionValue,

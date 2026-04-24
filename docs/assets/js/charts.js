@@ -1,4 +1,5 @@
 import { BAND_META, BAND_ORDER } from "./stats.js";
+import { t } from "./i18n.js";
 import {
     createHeadToHeadChart,
     createPatternChart,
@@ -128,7 +129,7 @@ export class BenchmarkCharts {
 
     renderAccuracyBreakdown(summary, renderState = {}) {
         const sourceSummary = renderState.fullSummary || summary;
-        const labels = BAND_ORDER.map((key) => `${BAND_META[key].label}`);
+        const labels = BAND_ORDER.map((key) => t(`band.${key}`, BAND_META[key].label));
         const values = BAND_ORDER.map((key) => sourceSummary.bandCounts[key] || 0);
         const activeBand = String(renderState.activeFilters?.band || "all");
         const shouldDim = Boolean(renderState.dimUnselected && activeBand !== "all");
@@ -173,7 +174,7 @@ export class BenchmarkCharts {
                             label: (context) => {
                                 const count = Number(context.raw || 0);
                                 const total = sourceSummary.validRows || 1;
-                                const rate = ((count / total) * 100).toFixed(1);
+                                const rate = ((count / total) * 100).toFixed(2);
                                 return ` ${context.label}: ${count} (${rate}%)`;
                             },
                         },
@@ -192,7 +193,7 @@ export class BenchmarkCharts {
         const max = values.length ? Math.max(...values) + 0.6 : 10;
 
         const datasets = BAND_ORDER.map((key) => ({
-            label: BAND_META[key].label,
+            label: t(`band.${key}`, BAND_META[key].label),
             data: (summary.scatterByBand[key] || []).map((row) => ({
                 x: row.expected,
                 y: row.got,
@@ -230,7 +231,7 @@ export class BenchmarkCharts {
                                 )];
 
                                 if (!names.length) {
-                                    return "Unknown";
+                                    return t("common.unknown", "Unknown");
                                 }
 
                                 if (names.length === 1) {
@@ -252,7 +253,7 @@ export class BenchmarkCharts {
                         max,
                         title: {
                             display: true,
-                            text: "Expected",
+                            text: t("index.table.columns.expected", "Expected"),
                         },
                     },
                     y: {
@@ -260,7 +261,7 @@ export class BenchmarkCharts {
                         max,
                         title: {
                             display: true,
-                            text: "Got",
+                            text: t("index.table.columns.got", "Got"),
                         },
                     },
                 },
@@ -276,7 +277,7 @@ export class BenchmarkCharts {
             data: {
                 labels: summary.deltaHistogram.labels,
                 datasets: [{
-                    label: "Maps",
+                    label: t("index.kpi.totalMaps", "Maps"),
                     data: summary.deltaHistogram.counts,
                     backgroundColor: "rgba(128, 179, 255, 0.55)",
                     borderColor: "rgba(128, 179, 255, 0.9)",
@@ -318,7 +319,7 @@ export class BenchmarkCharts {
                 labels,
                 datasets: [
                     {
-                        label: "Expected",
+                        label: t("index.table.columns.expected", "Expected"),
                         data: rows.map((row) => row.expected),
                         borderColor: "#7ad1ff",
                         backgroundColor: "rgba(122, 209, 255, 0.12)",
@@ -327,7 +328,7 @@ export class BenchmarkCharts {
                         tension: 0.26,
                     },
                     {
-                        label: "Got",
+                        label: t("index.table.columns.got", "Got"),
                         data: rows.map((row) => row.got),
                         borderColor: "#5ee8bd",
                         backgroundColor: "rgba(94, 232, 189, 0.12)",
@@ -352,7 +353,7 @@ export class BenchmarkCharts {
                         callbacks: {
                             title: (items) => {
                                 const index = Number(items[0]?.dataIndex || 0);
-                                return rows[index]?.name || "Map";
+                                return rows[index]?.name || t("common.map", "Map");
                             },
                         },
                     },
@@ -364,13 +365,13 @@ export class BenchmarkCharts {
                         },
                         title: {
                             display: true,
-                            text: "Map index (sorted by expected)",
+                            text: t("index.charts.trend.xAxis", "Map index (sorted by expected)"),
                         },
                     },
                     y: {
                         title: {
                             display: true,
-                            text: "Difficulty value",
+                            text: t("index.charts.trend.yAxis", "Difficulty value"),
                         },
                     },
                 },

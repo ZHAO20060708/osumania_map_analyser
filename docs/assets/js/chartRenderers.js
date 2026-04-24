@@ -1,3 +1,5 @@
+import { t } from "./i18n.js";
+
 function buildDimmedColors(rows, activeValue, keyName, activeFill, activeBorder) {
     const shouldDim = Boolean(activeValue && activeValue !== "all");
 
@@ -39,8 +41,8 @@ export function createPatternChart({
         data: {
             labels: topPatterns.map((row) => row.pattern),
             datasets: [{
-                label: "MAE",
-                data: topPatterns.map((row) => Number(row.mae.toFixed(4))),
+                label: t("index.kpi.mae", "MAE"),
+                data: topPatterns.map((row) => Number(row.mae.toFixed(2))),
                 backgroundColor: colorSet.fills,
                 borderColor: colorSet.borders,
                 borderWidth: 1,
@@ -68,7 +70,7 @@ export function createPatternChart({
                     callbacks: {
                         label: (context) => {
                             const row = topPatterns[context.dataIndex];
-                            return ` MAE ${Number(context.raw).toFixed(3)} | bias ${row.bias.toFixed(3)} | n=${row.count}`;
+                            return ` MAE ${Number(context.raw).toFixed(2)} | bias ${row.bias.toFixed(2)} | n=${row.count}`;
                         },
                     },
                 },
@@ -78,7 +80,7 @@ export function createPatternChart({
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: "MAE",
+                        text: t("index.kpi.mae", "MAE"),
                     },
                 },
             },
@@ -108,8 +110,8 @@ export function createSubPatternChart({
         data: {
             labels: topSubPatterns.map((row) => row.subPattern),
             datasets: [{
-                label: "MAE",
-                data: topSubPatterns.map((row) => Number(row.mae.toFixed(4))),
+                label: t("index.kpi.mae", "MAE"),
+                data: topSubPatterns.map((row) => Number(row.mae.toFixed(2))),
                 backgroundColor: colorSet.fills,
                 borderColor: colorSet.borders,
                 borderWidth: 1,
@@ -137,7 +139,7 @@ export function createSubPatternChart({
                     callbacks: {
                         label: (context) => {
                             const row = topSubPatterns[context.dataIndex];
-                            return ` MAE ${Number(context.raw).toFixed(3)} | bias ${row.bias.toFixed(3)} | n=${row.count}`;
+                            return ` MAE ${Number(context.raw).toFixed(2)} | bias ${row.bias.toFixed(2)} | n=${row.count}`;
                         },
                     },
                 },
@@ -147,7 +149,7 @@ export function createSubPatternChart({
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: "MAE",
+                        text: t("index.kpi.mae", "MAE"),
                     },
                 },
             },
@@ -165,7 +167,7 @@ export function createHeadToHeadChart({ ChartRef, canvas, compareSummary }) {
         type: "scatter",
         data: {
             datasets: [{
-                label: "Maps",
+                label: t("index.kpi.totalMaps", "Maps"),
                 data: points,
                 backgroundColor: "rgba(128, 179, 255, 0.78)",
                 borderColor: "rgba(128, 179, 255, 0.95)",
@@ -192,7 +194,7 @@ export function createHeadToHeadChart({ ChartRef, canvas, compareSummary }) {
                             )];
 
                             if (!names.length) {
-                                return "Unknown";
+                                return t("common.unknown", "Unknown");
                             }
 
                             if (names.length === 1) {
@@ -214,7 +216,7 @@ export function createHeadToHeadChart({ ChartRef, canvas, compareSummary }) {
                     max,
                     title: {
                         display: true,
-                        text: "Base |Delta|",
+                        text: t("index.compare.baseDeltaAbs", "Base |Delta|"),
                     },
                 },
                 y: {
@@ -222,7 +224,7 @@ export function createHeadToHeadChart({ ChartRef, canvas, compareSummary }) {
                     max,
                     title: {
                         display: true,
-                        text: "Compare |Delta|",
+                        text: t("index.compare.compareDeltaAbs", "Compare |Delta|"),
                     },
                 },
             },

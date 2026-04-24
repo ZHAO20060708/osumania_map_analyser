@@ -162,6 +162,34 @@ bid,name,pattern,subPattern,expected,got,delta,deltaAbs
 ,Tommorow Perfume,stamina,Unsigned,1,1.40,-0.40,0.40
 ,Shelter,speed,Unsigned,1,0.80,0.20,0.20
 ,Miracle Chance,jack,Unsigned,1,-1.00,2.00,2.00
+3079544,Night Club Junkie x0.95,speed,low stream,14.6,15.00,-0.40,0.40
+3079545,Night Club Junkie,speed,low stream,15,15.40,-0.40,0.40
+3933034,kizuato x1.25,speed,staircase,15.8,15.60,0.20,0.20
+3933037,kizuato x1.3,speed,staircase,16.2,16.40,-0.20,0.20
+4692665,Everything Black x0.95,speed,high stream,14.8,14.60,0.20,0.20
+4692669,Everything Black,speed,high stream,15.2,15.00,0.20,0.20
+1455989,Moon Gate,speed,high stream,13,12.00,1.00,1.00
+5111540,angel dust,stamina,light handstream,16.4,16.60,-0.20,0.20
+5195389,Lolit Speed x1.13,stamina,dense jumpstream,14,12.60,1.40,1.40
+1305297,Tornado,tech,jacky tech,13.4,12.00,1.40,1.40
+2196118,Kaguyahime x1.2,tech,jacky tech,14.4,14.00,0.40,0.40
+1065834,Big Brother,tech,stream tech,10,9.40,0.60,0.60
+2877294,STRONG 280,stamina,dense handstream,14.4,14.00,0.40,0.40
+716700,slavik goblins,stamina,dense handstream,13.7,13.40,0.30,0.30
+1429738,star of andromeda,jack,low chordjack,11,8.00,3.00,3.00
+3150955,star of andromeda x1.1,jack,low chordjack,13,11.00,2.00,2.00
+3150957,star of andromeda x1.2,jack,low chordjack,14,12.40,1.60,1.60
+3150959,star of andromeda x1.3,jack,low chordjack,15,13.40,1.60,1.60
+3580775,star of andromeda x1.4,jack,low chordjack,16,14.40,1.60,1.60
+2552927,paranoia,jack,low chordjack,10,9.20,0.80,0.80
+3260902,The Truth Never Spoken,jack,mid chordjack,12.6,12.40,0.20,0.20
+2308001,Vertex Beta,jack,mid chordjack,15.8,14.60,1.20,1.20
+4706643,EVERYTHING BLACK,jack,high chordjack,13.6,13.40,0.20,0.20
+3535951,Heaven's Fall x1.3,stamina,dense handstream,13.6,13.40,0.20,0.20
+3107371,Rude Buster (Camellia Remix),stamina,dense handstream,14,13.40,0.60,0.60
+3107368,Rude Buster (Camellia Remix) x1.1,stamina,dense handstream,15,14.40,0.60,0.60
+1937582,Love is War x1.3,stamina,dense handstream,13.6,14.00,-0.40,0.40
+2553924,ametsuchi x1.2,jack,low chordjack,8.6,6.20,2.40,2.40
 ,Oceanus(xfpsb1),ln,hybrid,9.5,8.60,0.90,0.90
 ,Otenba Koimusume,ln,density,9.5,9.00,0.50,0.50
 ,Gunjou Infinity [Buffed] (Cut),ln,speed,9.5,8.80,0.70,0.70
@@ -229,7 +257,7 @@ bid,name,pattern,subPattern,expected,got,delta,deltaAbs
 4609076,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [ 3 ~ 7th ~ (Marathon)],ln,inverse,7,Invalid: estDiff contains bound symbol (< or >),,
 4609085,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [Mousou Express [Remix] ~ 6th ~ (Marathon)],ln,inverse,6,5.00,1.00,1.00
 4609087,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [Promise ~ 5th ~ (Marathon)],ln,inverse,5,Invalid: estDiff contains bound symbol (< or >),,
-4609088,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [Sakase natsuzora, koi no hana. ~ 8th ~ (Marathon)],ln,inverse,8,6.60,1.40,1.40
+4609088,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [Sakase natsuzora koi no hana. ~ 8th ~ (Marathon)],ln,inverse,8,6.60,1.40,1.40
 4609077,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [cold planet ~ 9th ~ (Marathon)],ln,inverse,9,7.80,1.20,1.20
 4609084,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [Love is War ~ Yoake ~ (Marathon)],ln,density,11,11.00,0.00,0.00
 4609089,Various Artists - 4K LN Dan Courses v2 ~ Stage 3 Map Pack ~ [Sakura Trip 1.15x ~ 10th ~ (Marathon)],ln,inverse,10,8.40,1.60,1.60

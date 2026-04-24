@@ -21,7 +21,8 @@
 }
 
 .github-float-btn,
-.help-float-btn {
+.help-float-btn,
+.lang-float-btn {
     position: absolute;
     top: 10px;
     width: 38px;
@@ -48,8 +49,55 @@
     font: 700 1.06rem var(--font-ui);
 }
 
+.lang-float {
+    position: absolute;
+    top: 10px;
+    right: 98px;
+    z-index: 10;
+}
+
+#helpPageRoot .lang-float {
+    right: 54px;
+}
+
+.lang-float-btn {
+    top: 0;
+    right: 0;
+    font: 700 1rem var(--font-ui);
+    cursor: pointer;
+}
+
+.lang-menu {
+    position: absolute;
+    right: 0;
+    top: 42px;
+    min-width: 154px;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(12, 19, 34, 0.96);
+    box-shadow: 0 8px 24px rgba(3, 8, 17, 0.36);
+    display: grid;
+    gap: 6px;
+}
+
+.lang-menu-label {
+    color: var(--text-soft);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.lang-menu select {
+    min-width: 130px;
+    font-size: 0.9rem;
+    padding: 6px 8px;
+}
+
 .github-float-btn:hover,
-.help-float-btn:hover {
+.help-float-btn:hover,
+.lang-float-btn:hover {
     transform: translateY(-1px);
     border-color: rgba(128, 179, 255, 0.75);
     background: rgba(18, 29, 49, 0.95);
@@ -678,5 +726,25 @@ tr.map-error:hover td {
         right: 44px;
         width: 34px;
         height: 34px;
+    }
+
+    .lang-float {
+        top: 6px;
+        right: 82px;
+    }
+
+    #helpPageRoot .lang-float {
+        right: 44px;
+    }
+
+    .lang-float-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .lang-menu {
+        top: 38px;
+        min-width: 140px;
+        padding: 7px;
     }
 }

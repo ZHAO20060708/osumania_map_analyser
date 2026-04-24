@@ -17,6 +17,7 @@ import {
     parseEnableStatusMarqueeValue,
     parseEnablePauseDetectionValue,
     parseEstimatorAlgorithmValue,
+    parseAzusaSunnyReferenceHoValue,
     parseEtternaVersionValue,
     parseCompanellaEtternaVersionValue,
     parseEnableNumericDifficultyValue,
@@ -397,6 +398,13 @@ export function applyEstimatorAlgorithmSetting(value) {
     return changed;
 }
 
+export function applyAzusaSunnyReferenceHoSetting(value) {
+    const next = normalizeBooleanSetting(value, APP_CONFIG.defaults.azusaSunnyReferenceHo);
+    const changed = state.azusaSunnyReferenceHo !== next;
+    state.azusaSunnyReferenceHo = next;
+    return changed;
+}
+
 export function applyEtternaVersionSetting(value) {
     const next = normalizeEtternaVersionValue(value) || APP_CONFIG.defaults.etternaVersion;
     const changed = state.etternaVersion !== next;
@@ -562,6 +570,7 @@ export function setupSettingsCommandListener() {
         const debugChanged = applyDebugUseAmountSetting(parseDebugUseAmountValue(payload));
         const diffTextChanged = applyDiffTextSetting(parseDiffTextValue(payload));
         const estimatorChanged = applyEstimatorAlgorithmSetting(parseEstimatorAlgorithmValue(payload));
+        const azusaSunnyReferenceHoChanged = applyAzusaSunnyReferenceHoSetting(parseAzusaSunnyReferenceHoValue(payload));
         const etternaVersionChanged = applyEtternaVersionSetting(parseEtternaVersionValue(payload));
         const companellaEtternaVersionChanged = applyCompanellaEtternaVersionSetting(parseCompanellaEtternaVersionValue(payload));
         const pauseChanged = applyPauseDetectionSetting(parseEnablePauseDetectionValue(payload));
@@ -591,6 +600,7 @@ export function setupSettingsCommandListener() {
             || debugChanged
             || diffTextChanged
             || estimatorChanged
+            || azusaSunnyReferenceHoChanged
             || etternaVersionChanged
             || companellaEtternaVersionChanged
             || pauseChanged
@@ -612,6 +622,7 @@ export function setupSettingsCommandListener() {
             || debugChanged
             || diffTextChanged
             || estimatorChanged
+            || azusaSunnyReferenceHoChanged
             || etternaVersionChanged
             || companellaEtternaVersionChanged
             || pauseChanged
@@ -686,6 +697,7 @@ export async function loadSettings() {
         applyDebugUseAmountSetting(parseDebugUseAmountValue(settings));
         applyDiffTextSetting(parseDiffTextValue(settings));
         applyEstimatorAlgorithmSetting(parseEstimatorAlgorithmValue(settings));
+        applyAzusaSunnyReferenceHoSetting(parseAzusaSunnyReferenceHoValue(settings));
         applyEtternaVersionSetting(parseEtternaVersionValue(settings));
         applyCompanellaEtternaVersionSetting(parseCompanellaEtternaVersionValue(settings));
         applyPauseDetectionSetting(parseEnablePauseDetectionValue(settings));
@@ -708,6 +720,7 @@ export async function loadSettings() {
         applyDebugUseAmountSetting(APP_CONFIG.defaults.debugUseAmount);
         applyDiffTextSetting(APP_CONFIG.defaults.diffText);
         applyEstimatorAlgorithmSetting(APP_CONFIG.defaults.estimatorAlgorithm);
+        applyAzusaSunnyReferenceHoSetting(APP_CONFIG.defaults.azusaSunnyReferenceHo);
         applyEtternaVersionSetting(APP_CONFIG.defaults.etternaVersion);
         applyCompanellaEtternaVersionSetting(APP_CONFIG.defaults.companellaEtternaVersion);
         applyPauseDetectionSetting(APP_CONFIG.defaults.pauseDetectionEnabled);

@@ -192,7 +192,13 @@ function trimSeriesStartToFirstObject(series) {
 }
 
 function formatEstimateDifficultyCaption() {
-    const base = "Estimate Difficulty";
+    const selectedAlgorithm = String(state.estimatorAlgorithm || "").trim();
+    const actualAlgorithm = String(state.actualEstimatorAlgorithm || selectedAlgorithm || "").trim();
+    const prefix = actualAlgorithm && selectedAlgorithm && actualAlgorithm !== selectedAlgorithm
+        ? `[${actualAlgorithm}] `
+        : "";
+
+    const base = `${prefix}Estimate Difficulty`;
     if (!state.enableNumericDifficulty || state.forceHideNumericDifficulty) {
         return base;
     }

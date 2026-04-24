@@ -1,4 +1,5 @@
 import { buildRowKey, classifyBand } from "../stats.js";
+import { t } from "../i18n.js";
 import { normalizePattern, normalizeSubPattern } from "./utils.js";
 
 export function isRowValidForStats(row) {
@@ -105,13 +106,13 @@ export function getWinnerLabel(better, compareEnabled) {
     }
 
     if (better === "base") {
-        return "Base";
+        return t("index.compare.winner.base", "Base");
     }
     if (better === "compare") {
-        return "Compare";
+        return t("index.compare.winner.compare", "Compare");
     }
     if (better === "tie") {
-        return "Tie";
+        return t("index.compare.winner.tie", "Tie");
     }
     return "-";
 }

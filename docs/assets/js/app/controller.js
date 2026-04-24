@@ -1,4 +1,5 @@
 import { computeHeadToHead, computeSummary } from "../stats.js";
+import { initI18n, onLanguageChange, t } from "../i18n.js";
 import {
     charts,
     dom,
@@ -113,8 +114,8 @@ function buildFriendlyFetchHint(originalMessage) {
 
     if (window.location.protocol === "file:" && isFetchFailure) {
         return [
-            "Direct file mode blocks fetch in some Edge contexts.",
-            "Click Upload Data Folder and select docs/data to load CSV files locally.",
+            t("hint.fileMode.fetchBlockedLine1", "Direct file mode blocks fetch in some Edge contexts."),
+            t("hint.fileMode.fetchBlockedLine2", "Click Upload Data Folder and select docs/data to load CSV files locally."),
         ].join(" ");
     }
 
@@ -146,30 +147,31 @@ function applyEmptyDashboard() {
         activeFilters: getActiveFilters(dom),
         fullSummary: emptySummary,
     });
-    dom.tableMeta.textContent = "No Data Loaded.";
+    dom.tableMeta.textContent = t("index.table.noData", "No Data Loaded.");
 }
 
 function applyFiltersAndRender() {
     const filters = getActiveFilters(dom);
-    const filtered = sortRows(
+    const filteredAll = sortRows(
         filterDisplayRows(state.displayRows, filters),
         state.sortKey,
         state.sortDirection,
     );
+    const filteredValid = filteredAll.filter((row) => !row._errorInfo);
 
-    state.filteredRows = filtered;
-    renderTable(filtered);
+    state.filteredRows = filteredValid;
+    renderTable(filteredValid);
     setCompareUiVisible(Boolean(state.compareAlgorithm));
 
-    const activeSummary = computeSummary(filtered);
+    const activeSummary = computeSummary(filteredAll);
     state.summary = activeSummary;
 
     const filteredCompareRows = state.compareAlgorithm
-        ? pickFilteredCompareRows(filtered, state.scopedCompareRows)
+        ? pickFilteredCompareRows(filteredValid, state.scopedCompareRows)
         : [];
 
     state.compareSummary = state.compareAlgorithm
-        ? computeHeadToHead(filtered, filteredCompareRows)
+        ? computeHeadToHead(filteredValid, filteredCompareRows)
         : null;
 
     updateSummary(activeSummary);
@@ -180,7 +182,7 @@ function applyFiltersAndRender() {
         ...filters,
         band: "all",
     };
-    const errorScopeRows = filterDisplayRows(state.allDisplayRows, errorFilters);
+    const errorScopeRows = filterDisplayRows(state.displayRows, errorFilters);
     renderErrorPanel(errorScopeRows);
 
     charts.render(activeSummary, state.compareSummary, {
@@ -189,7 +191,16 @@ function applyFiltersAndRender() {
         dimUnselected: hasActiveFilters(filters),
     });
 
-    dom.tableMeta.textContent = `${state.filteredRows.length} / ${state.displayRows.length} Maps Shown | Errors=${state.errorRows.length}`;
+    dom.tableMeta.textContent = t(
+        "index.table.meta",
+        "{shownValid} / {shownTotal} Valid Maps Shown | Total In Scope={scopeTotal} | Errors={errorCount}",
+        {
+            shownValid: filteredValid.length,
+            shownTotal: filteredAll.length,
+            scopeTotal: state.displayRows.length,
+            errorCount: state.errorRows.length,
+        },
+    );
 
     if (state.currentAlgorithm) {
         setReadyDatasetInfo(activeSummary, state.errorRows.length);
@@ -200,14 +211,14 @@ async function loadCurrentView(options = {}) {
     const forceReload = Boolean(options.forceReload);
 
     if (!state.currentAlgorithm) {
-        setStatus("Waiting", "warn");
-        setDatasetInfo("No Algorithm Selected.");
+        setStatus(t("status.waiting", "Waiting"), "warn");
+        setDatasetInfo(t("status.noAlgorithmSelected", "No Algorithm Selected."));
         applyEmptyDashboard();
         return;
     }
 
-    setStatus("Loading...", "warn");
-    setDatasetInfo(`Loading ${state.currentAlgorithm}...`);
+    setStatus(t("status.loading", "Loading..."), "warn");
+    setDatasetInfo(t("status.loadingAlgorithm", "Loading {algorithm}...", { algorithm: state.currentAlgorithm }));
 
     try {
         state.baseRows = await ensureRowsLoaded(state.currentAlgorithm, forceReload);
@@ -231,7 +242,7 @@ async function loadCurrentView(options = {}) {
             Boolean(state.compareAlgorithm),
         );
 
-        state.displayRows = state.allDisplayRows.filter((row) => !row._errorInfo);
+        state.displayRows = state.allDisplayRows;
 
         state.fullSummary = computeSummary(state.scopedBaseRows);
 
@@ -239,11 +250,11 @@ async function loadCurrentView(options = {}) {
         fillSubPatternFilter(state.scopedBaseRows);
         applyFiltersAndRender();
 
-        setStatus("Ready", "ok");
+        setStatus(t("status.ready", "Ready"), "ok");
         syncUrlParams();
     } catch (error) {
         applyEmptyDashboard();
-        setStatus("Error", "error");
+        setStatus(t("status.error", "Error"), "error");
         setDatasetInfo(`${state.currentAlgorithm} | ${buildFriendlyFetchHint(toErrorMessage(error))}`);
     }
 }
@@ -251,19 +262,19 @@ async function loadCurrentView(options = {}) {
 async function loadLocalDataAndRefresh(fileList) {
     const importedInfo = await importLocalDatasets(fileList);
     if (!importedInfo.hasCsv) {
-        setStatus("Waiting", "warn");
-        setDatasetInfo("No CSV Files Found In Selected Folder.");
+        setStatus(t("status.waiting", "Waiting"), "warn");
+        setDatasetInfo(t("status.noCsvFound", "No CSV Files Found In Selected Folder."));
         return;
     }
 
     if (!state.algorithms.length) {
-        setStatus("Error", "error");
-        setDatasetInfo("Local Import Finished But No Valid CSV Was Parsed.");
+        setStatus(t("status.error", "Error"), "error");
+        setDatasetInfo(t("status.localImportNoValidCsv", "Local Import Finished But No Valid CSV Was Parsed."));
         applyEmptyDashboard();
         return;
     }
 
-    if (!state.currentAlgorithm || !state.algorithms.includes(state.currentAlgorithm)) {
+    if (state.currentAlgorithm && !state.algorithms.includes(state.currentAlgorithm)) {
         state.currentAlgorithm = state.algorithms[0];
         state.baseMode = SCOPE_RC;
     }
@@ -275,7 +286,7 @@ async function loadLocalDataAndRefresh(fileList) {
 
     renderAlgorithmSelectors();
     updateSortVisual();
-    updateSourceHint(`Local Import ${importedInfo.imported} File(s)`);
+    updateSourceHint(t("index.meta.localImportFiles", "Local Import {count} File(s)", { count: importedInfo.imported }));
     await loadCurrentView();
 }
 
@@ -332,7 +343,9 @@ function bindEvents() {
 
     dom.reloadDataButton.addEventListener("click", async () => {
         const refreshResult = await refreshRemoteCatalog();
-        updateSourceHint(refreshResult.sourceLabel ? `Discovered by ${refreshResult.sourceLabel}` : "");
+        updateSourceHint(refreshResult.sourceLabel
+            ? t("index.meta.discoveredBy", "Discovered by {source}", { source: refreshResult.sourceLabel })
+            : "");
 
         if (state.currentAlgorithm && !state.algorithms.includes(state.currentAlgorithm)) {
             state.currentAlgorithm = state.algorithms[0] || null;
@@ -362,11 +375,11 @@ function bindEvents() {
         dom.downloadCurrentDataButton.addEventListener("click", () => {
             try {
                 const fileName = downloadCurrentDataSnapshot();
-                setStatus("Ready", "ok");
-                setDatasetInfo(`Exported current dashboard data to ${fileName}`);
+                setStatus(t("status.ready", "Ready"), "ok");
+                setDatasetInfo(t("status.exportedCurrentData", "Exported current dashboard data to {fileName}", { fileName }));
             } catch (error) {
-                setStatus("Error", "error");
-                setDatasetInfo(`Export failed: ${toErrorMessage(error)}`);
+                setStatus(t("status.error", "Error"), "error");
+                setDatasetInfo(t("status.exportFailed", "Export failed: {detail}", { detail: toErrorMessage(error) }));
             }
         });
     }
@@ -406,22 +419,35 @@ function bindEvents() {
 }
 
 export async function init() {
+    await initI18n({ page: "index" });
     bindEvents();
     exposeDashboardApi();
 
-    setStatus("Loading...", "warn");
-    setDatasetInfo("Discovering Datasets From docs/data...");
+    onLanguageChange(() => {
+        renderAlgorithmSelectors();
+        updateSortVisual();
+
+        if (state.currentAlgorithm) {
+            fillPatternFilter(state.scopedBaseRows);
+            fillSubPatternFilter(state.scopedBaseRows);
+            applyFiltersAndRender();
+        } else {
+            applyEmptyDashboard();
+        }
+    });
+
+    setStatus(t("status.loading", "Loading..."), "warn");
+    setDatasetInfo(t("status.discoveringDatasets", "Discovering Datasets From docs/data..."));
     updateSourceHint();
 
     const refreshResult = await refreshRemoteCatalog();
-    updateSourceHint(refreshResult.sourceLabel ? `Discovered by ${refreshResult.sourceLabel}` : "");
-
-    renderAlgorithmSelectors();
-    updateSortVisual();
+    updateSourceHint(refreshResult.sourceLabel
+        ? t("index.meta.discoveredBy", "Discovered by {source}", { source: refreshResult.sourceLabel })
+        : "");
 
     if (!state.algorithms.length) {
-        setStatus("Waiting", "warn");
-        setDatasetInfo("No Dataset Discovered. Click Upload Data Folder And Select docs/data.");
+        setStatus(t("status.waiting", "Waiting"), "warn");
+        setDatasetInfo(t("status.noDatasetDiscovered", "No Dataset Discovered. Click Upload Data Folder And Select docs/data."));
         applyEmptyDashboard();
         return;
     }
@@ -447,7 +473,7 @@ export async function init() {
     await loadCurrentView();
 
     if (window.location.protocol === "file:" && refreshResult.discoveredCount === 0) {
-        setStatus("Ready", "ok");
-        setDatasetInfo("Local-file Mode Detected. Use Upload Data Folder To Import CSVs From docs/data.");
+        setStatus(t("status.ready", "Ready"), "ok");
+        setDatasetInfo(t("status.localFileModeHint", "Local-file Mode Detected. Use Upload Data Folder To Import CSVs From docs/data."));
     }
 }

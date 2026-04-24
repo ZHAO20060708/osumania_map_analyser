@@ -2,6 +2,7 @@
 **[English](README_EN.md) | 中文**
 ****
 本仓库是一个 [tosu](https://tosu.app) 游戏内叠加界面(ppcounter)，实时在 osu!mania（4/6/7K） 下，lazer与stable的多个mod，提供估算难度、分析RC/LN键型、自定义ett版本计算MSD、难度图表和暂停检测功能。
+
 ![Features](img/features.gif)
 
 估计算法 Benchmark: 请前往[此处](https://leoblackmt.github.io/osumania_map_analyser/)查看基于真实谱面数据的估计算法表现对比。
@@ -86,7 +87,8 @@
     - **Vibro Detection**: 是否启用Vibro检测功能。
         - 推荐启用：启用后将检测谱面是否为Vibro谱面，并在估计难度中显示为Vibro。否则您将看到被极度拉高的难度估计。
     - **Estimator Algorithm**: 选择用于难度估计的算法。
-        - Mixed: (推荐)综合下方三个算法的混合算法，准确度相对较高。自动选择适配当前谱面的算法。
+        - Mixed: (推荐)综合下方四个算法的混合算法，准确度相对较高。自动选择适配当前谱面的算法。
+        - Azusa: 面向4K RC的Daniel改进算法，综合了Suuny算法进行了针对调整，在RC场景下表现较好，但不适用于LN主体的谱面。
         - Suuny: 使用Suuny Rework直接映射段位星数，适配4/6/7K的LN与RC段位。
         - [Daniel](https://thebagelofman.github.io/Daniel/): 使用Daniel算法进行估计，适配4K Reform Alpha及以上段位难度。
         - [Companella](https://github.com/Leinadix/companella): 使用Companella算法进行估计，适用于4K Reform Delta+及以下段位难度。
@@ -103,6 +105,7 @@
 - **网络配置**:
     - **WebSocket Endpoint**: 配置WebSocket服务器的地址和端口。
         - 确保该地址和端口与 tosu 内设置一致，以用于接收来自 tosu 的数据。
+        - 同时用于拼接谱面文件请求地址：`http://{host:port}/files/beatmap/file`。
         - 调整该项可用于在局域网内的其他设备上使用该插件，例如在手机或平板上显示分析结果。
         - 默认值为`localhost:24050`
 - **调试内容**:
@@ -111,6 +114,9 @@
     - **SV Detection**: 是否启用SV谱面检测功能（实验性）。
         - 启用后将在左下角显示SV标签。
         - 该功能处于实验阶段，会有误判或漏判的情况。
+    - **Azusa Sunny Reference Force HO**
+        - 启用后将强制Azusa算法将谱面视为纯米。
+        - 默认启用，请不要随意关闭。
 
 ## 参考内容
 - [tosu](https://tosu.app): 本插件的运行环境和基础框架。
