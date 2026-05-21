@@ -7,8 +7,6 @@ This repository is an in-game overlay (pp counter) for [tosu](https://tosu.app),
 
 ![Features](img/features.gif)
 
-Estimation Algorithm Benchmark: Please visit [here](https://leoblackmt.github.io/osumania_map_analyser/) to see the performance comparison of estimation algorithms based on real beatmap data.
-
 ## Key Features
 - **Real-time Analysis**: Analyzes various data of the current beatmap in real-time during gameplay/selection.
 - **Multi-mod Support**: Compatible with multiple mods in both lazer and stable, supporting custom speed changes and OD adjustments.
@@ -26,6 +24,11 @@ Estimation Algorithm Benchmark: Please visit [here](https://leoblackmt.github.io
 3. Place the entire folder in the `static` directory of tosu.
 4. Launch tosu, go to the dashboard, and you will find the "ManiaMapAnalyser" plugin. Click the `Settings` button on the right to configure it.
 5. For instructions on using the in-game interface and OBS, please refer to the relevant tosu documentation.
+
+## Estimator Algorithm Benchmark
+- The difficulty estimation algorithms of this plugin have been benchmarked based on real beatmap data, and the results can be viewed [here](https://leoblackmt.github.io/osumania_map_analyser/). The tests cover the performance of multiple algorithms across different types of beatmaps, helping players choose the one that suits them best.
+- It is important to note that while the benchmark provides a reference for algorithm performance, actual usage may be influenced by various factors such as beatmap characteristics and mod combinations. Players are encouraged to combine the benchmark results with their gameplay experience for judgment.
+- You can download the beatmap data used for benchmarking [here](https://github.com/LeoBlackMT/osumania_map_analyser/tree/main/docs/data/files.7z). However, please read the disclaimer and use the data responsibly.
 
 ## Notes
 1. The plugin needs to run in the `static` directory of tosu. Ensure it is placed directly in that directory, not nested inside another folder.
@@ -87,6 +90,9 @@ Note: It is recommended to start with the default settings and then adjust accor
         - The star icon on the left side of the status line is shown only when a newer version is available.
     - **Vibro Detection**: Whether to enable vibro detection.
         - Recommended: When enabled, the plugin will detect if a beatmap is a vibro map and display it as "Vibro" in the estimated difficulty; otherwise, you will see an extremely inflated difficulty estimate.
+    - **SV Detection**: Whether to enable SV beatmap detection.
+        - When enabled, an SV tag will be displayed in the bottom left corner when SV is detected.
+        - Note: If the display of beatmap tag capsules is not enabled, the SV tag will not be displayed.
     - **Estimator Algorithm**: Choose the algorithm used for difficulty estimation.
         - Mixed: (Recommended) A hybrid algorithm combining the four below, offering relatively higher accuracy. Automatically selects the algorithm best suited for the current beatmap.
         - Azusa: A Daniel-based algorithm tailored for 4K RC, incorporating adjustments based on the Suuny algorithm. It performs well in RC scenarios but is not suitable for LN-dominant beatmaps.
@@ -112,9 +118,6 @@ Note: It is recommended to start with the default settings and then adjust accor
 - **Debug Settings**:
     - **Use Amount For Category**: Whether to enable pattern classification logic based on the beatmap's cluster amount.
         - When enabled, pattern classification will be based on the number of objects in the beatmap, which **may** more accurately identify certain beatmaps.
-    - **SV Detection**: Whether to enable SV beatmap detection (experimental).
-        - When enabled, an SV tag will be displayed in the bottom left corner.
-        - This feature is experimental and may produce false positives or misses.
     - **Azusa Sunny Reference Force HO**
         - When enabled, the Azusa algorithm will be forced to treat the beatmap as a pure RC map.
         - It is enabled by default; please do not disable it casually. 

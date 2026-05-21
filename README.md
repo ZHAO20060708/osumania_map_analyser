@@ -5,8 +5,6 @@
 
 ![Features](img/features.gif)
 
-估计算法 Benchmark: 请前往[此处](https://leoblackmt.github.io/osumania_map_analyser/)查看基于真实谱面数据的估计算法表现对比。
-
 ## 主要特性
 - **实时分析**：在游戏/选图过程中实时分析当前谱面的各项数据。
 - **多mod支持**：兼容lazer与stable的多个mod，支持自定义倍速与改变OD。
@@ -24,6 +22,11 @@
 3. 将整个文件夹放置在 tosu 的 `static` 目录下。
 4. 启动 tosu，进入 dashborad，即可找到 "ManiaMapAnalyser" 插件，可以点击右侧`Settings`按钮进行相关设置。
 5. 游戏内界面以及OBS的使用方法见 tosu 相关文档。
+
+## 难度估计算法基准测试
+- 该插件的难度估计算法经过了基于真实谱面数据的基准测试，测试结果可以在[此处](https://leoblackmt.github.io/osumania_map_analyser/)查看。测试涵盖了多个算法在不同类型谱面上的表现，帮助玩家选择适合自己的算法。
+- 需要注意的是，虽然基准测试提供了算法表现的参考，但实际使用中可能会受到谱面特征、mod组合等多种因素的影响，建议玩家结合自己的游玩体验进行判断。
+- 你可以在[此处](https://github.com/LeoBlackMT/osumania_map_analyser/tree/main/docs/data/files.7z)下载用于基准测试的谱面数据，但是请注意阅读免责声明，合理使用这些数据。
 
 ## 注意事项
 1. 插件需要在 tosu 的 `static` 目录下运行，注意不要嵌套文件夹，确保正确放置。
@@ -86,6 +89,9 @@
         - 当发现新版本时，状态栏左侧星形图标会显示。
     - **Vibro Detection**: 是否启用Vibro检测功能。
         - 推荐启用：启用后将检测谱面是否为Vibro谱面，并在估计难度中显示为Vibro。否则您将看到被极度拉高的难度估计。
+    - **SV Detection**: 是否启用SV谱面检测功能。
+        - 启用后当检测到变速时，将在左下角显示SV标签。
+        - 注意：如果未开启显示谱面标签胶囊，SV标签将不会显示。
     - **Estimator Algorithm**: 选择用于难度估计的算法。
         - Mixed: (推荐)综合下方四个算法的混合算法，准确度相对较高。自动选择适配当前谱面的算法。
         - Azusa: 面向4K RC的Daniel改进算法，综合了Suuny算法进行了针对调整，在RC场景下表现较好，但不适用于LN主体的谱面。
@@ -111,9 +117,6 @@
 - **调试内容**:
     - **Use Amount For Category**：是否启用基于谱面Cluster Amount的键型分类逻辑。
         - 启用后将根据谱面物件数量进行键型分类，**可能**会更准确地识别某些谱面。
-    - **SV Detection**: 是否启用SV谱面检测功能（实验性）。
-        - 启用后将在左下角显示SV标签。
-        - 该功能处于实验阶段，会有误判或漏判的情况。
     - **Azusa Sunny Reference Force HO**
         - 启用后将强制Azusa算法将谱面视为纯米。
         - 默认启用，请不要随意关闭。
