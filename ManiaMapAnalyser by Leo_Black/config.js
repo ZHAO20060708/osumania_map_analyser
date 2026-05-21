@@ -14,6 +14,7 @@ export const APP_CONFIG = {
         cardRadius: ["Small", "Medium", "Large"],
         reverseCardExtendDirection: [true, false],
         modeTag: ["RC", "LN", "HB", "Mix", "SV"],
+        pauseDetectionThreshold: ["100", "200", "500", "1000"],
     },
 
     starStops: {
@@ -70,6 +71,7 @@ export const APP_CONFIG = {
         socketRecalcLazyDelayMs: 200,
         settingsCommandTimeoutMs: 1500,
         pauseDetectEpsilonMs: 0,
+        pauseDetectionThresholdMs: 500,
     },
 
     defaults: {
@@ -81,6 +83,7 @@ export const APP_CONFIG = {
         etternaVersion: "0.72.3",
         companellaEtternaVersion: "0.74.0",
         pauseDetectionEnabled: true,
+        pauseDetectionThresholdMs: 500,
         enableEtternaRainbowBars: true,
         enableStatusMarquee: true,
         vibroDetection: true,

@@ -79,6 +79,7 @@ export const state = {
     etternaVersion: APP_CONFIG.defaults.etternaVersion,
     companellaEtternaVersion: APP_CONFIG.defaults.companellaEtternaVersion,
     pauseDetectionEnabled: APP_CONFIG.defaults.pauseDetectionEnabled,
+    pauseDetectionThresholdMs: APP_CONFIG.defaults.pauseDetectionThresholdMs,
     enableEtternaRainbowBars: APP_CONFIG.defaults.enableEtternaRainbowBars,
     enableStatusMarquee: APP_CONFIG.defaults.enableStatusMarquee,
     enableNumericDifficulty: APP_CONFIG.defaults.enableNumericDifficulty,
@@ -105,6 +106,8 @@ export const state = {
     isPaused: false,
     pauseTimeMs: 0,
     frozenInterpMs: 0,
+    pauseFreezeStartRealMs: 0,
+    pauseFreezeSongTimeMs: 0,
     hasSongTimeSample: false,
     clientStateName: "",
     isInPlayState: false,
@@ -144,6 +147,7 @@ export const GRAPH_LOADING_BASELINE_Y = GRAPH_VIEWBOX_HEIGHT - GRAPH_PADDING_BOT
 export const SONG_TIME_JUMP_THRESHOLD_MS = APP_CONFIG.timing.songTimeJumpThresholdMs;
 export const NOTE_END_MARGIN_MS = APP_CONFIG.timing.noteEndMarginMs;
 export const PAUSE_DETECT_EPSILON_MS = APP_CONFIG.timing.pauseDetectEpsilonMs;
+export const PAUSE_DETECTION_THRESHOLD_MS = APP_CONFIG.timing.pauseDetectionThresholdMs;
 
 export const SOCKET_RECALC_LAZY_DELAY_MS = APP_CONFIG.timing.socketRecalcLazyDelayMs;
 export const SETTINGS_COMMAND_TIMEOUT_MS = APP_CONFIG.timing.settingsCommandTimeoutMs;
@@ -171,6 +175,7 @@ export const {
     parseEtternaVersionValue,
     parseCompanellaEtternaVersionValue,
     parseEnablePauseDetectionValue,
+    parsePauseDetectionThresholdValue,
     parseDisableVibroDetectionValue,
     parseVibroDetectionValue,
     parseEnableEtternaRainbowBarsValue,

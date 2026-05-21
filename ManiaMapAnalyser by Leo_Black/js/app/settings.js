@@ -419,6 +419,14 @@ export function applyCompanellaEtternaVersionSetting(value) {
     return changed;
 }
 
+export function applyPauseDetectionThresholdSetting(value) {
+    const num = Number(value);
+    const next = (Number.isFinite(num) && num > 0) ? Math.round(num) : APP_CONFIG.defaults.pauseDetectionThresholdMs;
+    const changed = state.pauseDetectionThresholdMs !== next;
+    state.pauseDetectionThresholdMs = next;
+    return changed;
+}
+
 export function applyPauseDetectionSetting(value) {
     const next = normalizeBooleanSetting(value, APP_CONFIG.defaults.pauseDetectionEnabled);
     const changed = state.pauseDetectionEnabled !== next;
@@ -428,6 +436,8 @@ export function applyPauseDetectionSetting(value) {
         state.isPaused = false;
         state.pauseTimeMs = 0;
         state.frozenInterpMs = 0;
+        state.pauseFreezeStartRealMs = 0;
+        state.pauseFreezeSongTimeMs = 0;
         state.pauseMarkerTimes = [];
         state.pauseCount = 0;
     } else if (!Number.isFinite(state.frozenInterpMs)) {
@@ -574,6 +584,7 @@ export function setupSettingsCommandListener() {
         const etternaVersionChanged = applyEtternaVersionSetting(parseEtternaVersionValue(payload));
         const companellaEtternaVersionChanged = applyCompanellaEtternaVersionSetting(parseCompanellaEtternaVersionValue(payload));
         const pauseChanged = applyPauseDetectionSetting(parseEnablePauseDetectionValue(payload));
+        const pauseThresholdChanged = applyPauseDetectionThresholdSetting(parsePauseDetectionThresholdValue(payload));
         const rainbowChanged = applyEnableEtternaRainbowBarsSetting(parseEnableEtternaRainbowBarsValue(payload));
         const statusMarqueeChanged = applyEnableStatusMarqueeSetting(parseEnableStatusMarqueeValue(payload));
         const vibroChanged = applyVibroDetectionSetting(parseVibroDetectionValue(payload));
@@ -604,6 +615,7 @@ export function setupSettingsCommandListener() {
             || etternaVersionChanged
             || companellaEtternaVersionChanged
             || pauseChanged
+            || pauseThresholdChanged
             || rainbowChanged
             || statusMarqueeChanged
             || vibroChanged
@@ -626,6 +638,7 @@ export function setupSettingsCommandListener() {
             || etternaVersionChanged
             || companellaEtternaVersionChanged
             || pauseChanged
+            || pauseThresholdChanged
             || rainbowChanged
             || vibroChanged
             || modeTagVisibilityChanged
@@ -701,6 +714,7 @@ export async function loadSettings() {
         applyEtternaVersionSetting(parseEtternaVersionValue(settings));
         applyCompanellaEtternaVersionSetting(parseCompanellaEtternaVersionValue(settings));
         applyPauseDetectionSetting(parseEnablePauseDetectionValue(settings));
+        applyPauseDetectionThresholdSetting(parsePauseDetectionThresholdValue(settings));
         applyEnableEtternaRainbowBarsSetting(parseEnableEtternaRainbowBarsValue(settings));
         applyEnableStatusMarqueeSetting(parseEnableStatusMarqueeValue(settings));
         applyVibroDetectionSetting(parseVibroDetectionValue(settings));
@@ -724,6 +738,7 @@ export async function loadSettings() {
         applyEtternaVersionSetting(APP_CONFIG.defaults.etternaVersion);
         applyCompanellaEtternaVersionSetting(APP_CONFIG.defaults.companellaEtternaVersion);
         applyPauseDetectionSetting(APP_CONFIG.defaults.pauseDetectionEnabled);
+        applyPauseDetectionThresholdSetting(APP_CONFIG.defaults.pauseDetectionThresholdMs);
         applyEnableEtternaRainbowBarsSetting(APP_CONFIG.defaults.enableEtternaRainbowBars);
         applyEnableStatusMarqueeSetting(APP_CONFIG.defaults.enableStatusMarquee);
         applyVibroDetectionSetting(APP_CONFIG.defaults.vibroDetection);

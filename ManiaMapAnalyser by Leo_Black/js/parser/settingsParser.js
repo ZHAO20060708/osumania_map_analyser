@@ -335,6 +335,17 @@ export function createSettingsParsers(appConfig) {
         return normalizeBooleanSetting(value, appConfig.defaults.pauseDetectionEnabled);
     }
 
+    function parsePauseDetectionThresholdValue(settingsPayload) {
+        const value = extractSettingValue(settingsPayload, "pauseDetectionThreshold");
+        if (value !== undefined && value !== null) {
+            const num = Number(value);
+            if (Number.isFinite(num) && num > 0) {
+                return Math.round(num);
+            }
+        }
+        return appConfig.defaults.pauseDetectionThresholdMs;
+    }
+
     function parseDisableVibroDetectionValue(settingsPayload) {
         return !parseVibroDetectionValue(settingsPayload);
     }
@@ -472,6 +483,7 @@ export function createSettingsParsers(appConfig) {
         parseEtternaVersionValue,
         parseCompanellaEtternaVersionValue,
         parseEnablePauseDetectionValue,
+        parsePauseDetectionThresholdValue,
         parseDisableVibroDetectionValue,
         parseVibroDetectionValue,
         parseEnableEtternaRainbowBarsValue,
