@@ -102,6 +102,10 @@ const AZUSA_CALIBRATION_HIGH_BLOCKS = Object.freeze([
     [18.1973, 18.1973, 17.2000],
     [18.2026, 18.2026, 17.2000],
     [18.4562, 19.3477, 17.9500],
+    [19.3477, 20.5000, 18.2000],
+    [20.5000, 22.0000, 18.6000],
+    [22.0000, 24.0000, 19.2000],
+    [24.0000, 27.0000, 20.0000],
 ]);
 
 const AZUSA_ISOTONIC_POINTS = Object.freeze([
@@ -184,6 +188,12 @@ const AZUSA_ISOTONIC_POINTS = Object.freeze([
     [17.5478, 17.2000],
     [17.7603, 17.2000],
     [17.9706, 17.9500],
+    [18.4000, 18.2000],
+    [18.9000, 18.5000],
+    [19.5000, 18.9000],
+    [20.2000, 19.3000],
+    [21.2000, 19.7000],
+    [22.5000, 20.0000],
 ]);
 
 function buildErrorResult(code, message, extras = {}) {
@@ -262,9 +272,7 @@ function formatRcBaseLabel(base) {
 
 function numericToRcLabel(numeric) {
     const value = Number(numeric);
-    if (!Number.isFinite(value)) {
-        return "Invalid";
-    }
+    if (!Number.isFinite(value)) return "Invalid";
 
     const clamped = clamp(value, -2.4, 20.4);
     let bestMatch = null;
@@ -274,19 +282,12 @@ function numericToRcLabel(numeric) {
             const centerValue = base + tier.offset;
             const distance = Math.abs(clamped - centerValue);
             if (!bestMatch || distance < bestMatch.distance) {
-                bestMatch = {
-                    base,
-                    suffix: tier.suffix,
-                    distance,
-                };
+                bestMatch = { base, suffix: tier.suffix, distance };
             }
         }
     }
 
-    if (!bestMatch) {
-        return "Invalid";
-    }
-
+    if (!bestMatch) return "Invalid";
     return `${formatRcBaseLabel(bestMatch.base)} ${bestMatch.suffix}`;
 }
 
