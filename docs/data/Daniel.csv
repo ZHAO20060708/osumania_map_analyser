@@ -276,7 +276,6 @@ bid,name,pattern,subPattern,expected,got,delta,deltaAbs
 4614493,Various Artists - 4K LN Dan Courses v2 ~ Stage 4 Map Pack ~ [Tsumibito ~ 7th ~ (Marathon)],ln,density,7,Invalid: Daniel algorithm does not support LN benchmark rows,,
 4609226,Various Artists - 4K LN Dan Courses v2 ~ Stage 4 Map Pack ~ [Ordinary world ~ 9th ~ (Marathon)],ln,density,9,Invalid: Daniel algorithm does not support LN benchmark rows,,
 4609222,Various Artists - 4K LN Dan Courses v2 ~ Stage 4 Map Pack ~ [Element of SPADA 1.1x ~ 10th ~ (Marathon)],ln,speed,12,Invalid: Daniel algorithm does not support LN benchmark rows,,
-4609222,Various Artists - 4K LN Dan Courses v2 ~ Stage 4 Map Pack ~ [Element of SPADA 1.1x ~ 10th ~ (Marathon)] (4609222),ln,density,10,Invalid: Daniel algorithm does not support LN benchmark rows,,
 4609219,Various Artists - 4K LN Dan Courses v2 ~ Stage 4 Map Pack ~ [asphyxia 1.05x ~ Yoake ~ (Marathon)],ln,speed,11,Invalid: Daniel algorithm does not support LN benchmark rows,,
 4609230,Various Artists - 4K LN Dan Courses v2 ~ Stage 4 Map Pack ~ [The lost ~ Yami ~ (Marathon)],ln,speed,14,Invalid: Daniel algorithm does not support LN benchmark rows,,
 4609225,Various Artists - 4K LN Dan Courses v2 ~ Stage 4 Map Pack ~ [NUCLEAR-STAR ~ Yume ~ (Marathon)],ln,speed,15,Invalid: Daniel algorithm does not support LN benchmark rows,,
@@ -628,3 +627,121 @@ bid,name,pattern,subPattern,expected,got,delta,deltaAbs
 ,Various Artists - Dan ~ REFORM ~ 2nd Pack (Thaumiel) [~ EXTRA-DELTA ~ (Marathon)],course,rc course,14,14.00,0.00,0.00
 ,Various Artists - Dan ~ REFORM ~ 2nd Pack (Thaumiel) [~ EXTRA-EPSILON ~ (Marathon)],course,rc course,15,15.40,-0.40,0.40
 ,Various Artists - Dan ~ REFORM ~ FINAL ([GB]Thaumiel) [~ FINAL - ETA ~ ( Marathon )],course,rc course,17,17.40,-0.40,0.40
+5319863,Dan - Signicial's Courses[[4K] Stage III - Termination [3rd Dan] (Marathon)],course,rc course,3.1,Invalid: estDiff contains bound symbol (< or >),,
+5319952,Dan - Signicial's Courses[[4K] Stage IV - Resuscitation [4th Dan] (Marathon)],course,rc course,3.7,Invalid: estDiff contains bound symbol (< or >),,
+5031832,Dan - Signicial's Courses[[4K] Stage V - Disturbance [5th Dan] (Marathon)],course,rc course,4.6,Invalid: estDiff contains bound symbol (< or >),,
+5031833,Dan - Signicial's Courses[[4K] Stage VI - Revitalization [6th Dan] (Marathon)],course,rc course,5.6,Invalid: estDiff contains bound symbol (< or >),,
+5320775,Dan - Signicial's Courses[[4K] Stage VII - Motivation [7th Dan] (Marathon)],course,rc course,6.4,Invalid: estDiff contains bound symbol (< or >),,
+5320776,Dan - Signicial's Courses[[4K] Stage VIII - Misfortune [8th Dan] (Marathon)],course,rc course,7.5,Invalid: estDiff contains bound symbol (< or >),,
+5320774,Dan - Signicial's Courses[[4K] Stage IX - Catastrophe [9th Dan] (Marathon)],course,rc course,8.7,Invalid: estDiff contains bound symbol (< or >),,
+5031834,Dan - Signicial's Courses[[4K] Stage X - Finale [10th Dan] (Marathon)],course,rc course,9.6,Invalid: estDiff contains bound symbol (< or >),,
+3216602,Dan - Signicial's Courses[[4K] Stage XI - Alpha [11th Dan] (Marathon)],course,rc course,10.5,10.60,-0.10,0.10
+5637760,Dan - Signicial's Courses[[4K] Special Stage I - Luminal [11.5th Dan] (Marathon)],course,rc course,11.1,11.00,0.10,0.10
+3216603,Dan - Signicial Courses[[4K] Stage XII - Beta [12th Dan] (Marathon)],course,rc course,11.8,11.60,0.20,0.20
+3216604,Dan - Signicial's Courses[[4K] Stage XIII - Gamma [13th Dan] (Marathon)],course,rc course,12.7,13.00,-0.30,0.30
+3216606,Dan - Signicial's Courses[[4K] Stage XIV - Delta [14th Dan] (Marathon)],course,rc course,13.7,14.00,-0.30,0.30
+5442562,Dan - Signicial's Courses[[4K] Special Stage II - Tachyon [14.5th Dan] (Marathon)],course,rc course,14.3,14.60,-0.30,0.30
+3216605,Dan - Signicial's Courses[[4K] Last Stage - Epsilon [15th Dan] (Marathon)],course,rc course,14.9,15.40,-0.50,0.50
+5370092,Dan - Signicial's Courses[[4K] Extra Stage I - Zeta [16th Dan] (Marathon)],course,rc course,16.1,16.00,0.10,0.10
+5597992,Dan - Signicial's Courses[[4K] Extra Stage II - Eta [17th Dan] (Marathon)],course,rc course,17.1,17.00,0.10,0.10
+5680925,Dan - Signicial's Courses[[4K] Extra Stage III - Theta [18th Dan] (Marathon)],course,rc course,17.9,17.60,0.30,0.30
+5695357,Reincarnation(signicial dan),jack,low chordjack,2.9,Invalid: estDiff contains bound symbol (< or >),,
+5695347,Backyun! - BAD GIRL -(signicial dan),jack,low chordjack,3.7,Invalid: estDiff contains bound symbol (< or >),,
+5695360,air's gravity(signicial dan),jack,low chordjack,4.8,Invalid: estDiff contains bound symbol (< or >),,
+5695358,Another Medium(signicial dan),jack,low chordjack,5.6,Invalid: estDiff contains bound symbol (< or >),,
+5695355,Saltwater Chicken & Duck Roasted Chicken & Duck(signicial dan),jack,low chordjack,6.6,Invalid: estDiff contains bound symbol (< or >),,
+5695349,EVERGREEN(signicial dan),jack,mid chordjack,7.4,Invalid: estDiff contains bound symbol (< or >),,
+5695345,Alea jacta est(signicial dan),jack,low chordjack,8.4,Invalid: estDiff contains bound symbol (< or >),,
+5695353,What is love(signicial dan),jack,high chordjack,9.1,Invalid: estDiff contains bound symbol (< or >),,
+5695359,Count What You Have Now(signicial dan) x1.05,jack,high chordjack,10.3,Invalid: estDiff contains bound symbol (< or >),,
+5590322,Cryonix(signicial dan),jack,low chordjack,11.5,11.60,-0.10,0.10
+5695348,lost found melody(signicial dan),jack,low chordjack,11.8,11.00,0.80,0.80
+5695354,The Safari(signicial dan),jack,anchor chordjack,12.6,11.40,1.20,1.20
+5695350,Nijiiro Kekkai Gekkyou no Goku(signicial dan),jack,anchor chordjack,13.6,13.60,0.00,0.00
+5590317,Nijuu(signicial dan),jack,anchor chordjack,14.5,14.40,0.10,0.10
+5695352,Ragnarok(signicial dan) x0.9,jack,high chordjack,16.1,15.60,0.50,0.50
+5370048,Ambitious(signicial dan),tech,stream tech,3.3,Invalid: estDiff contains bound symbol (< or >),,
+5370044,for Q(signicial dan),tech,stream tech,3.7,Invalid: estDiff contains bound symbol (< or >),,
+5370045,kibou no tsuki(signicial dan),tech,jack tech,4.5,Invalid: estDiff contains bound symbol (< or >),,
+5370043,BIRTH(signicial dan),tech,stream tech,5.7,Invalid: estDiff contains bound symbol (< or >),,
+5370047,girls.exe(signicial dan),tech,stream tech,6.4,Invalid: estDiff contains bound symbol (< or >),,
+5370050,Hestia(signicial dan),tech,stream tech,7.8,Invalid: estDiff contains bound symbol (< or >),,
+5370046,T'Suramic(signicial dan),tech,stream tech,9.6,Invalid: estDiff contains bound symbol (< or >),,
+5370036,Nowise(signicial dan),tech,jack tech,10.5,Invalid: estDiff contains bound symbol (< or >),,
+5590320,Veins Resonance(signicial dan),tech,jack tech,10.7,Invalid: estDiff contains bound symbol (< or >),,
+5370049,Rainshower(signicial dan),tech,jack tech,11.6,10.60,1.00,1.00
+5370039,Sulfide(signicial dan),tech,stream tech,13.5,13.60,-0.10,0.10
+5590318,sirens eye(signicial dan),tech,stream tech,14.4,14.40,0.00,0.00
+5370038,POLYBIUS GB SPEEDRUN(signicial dan) x1.2,tech,stream tech,14.8,14.60,0.20,0.20
+5370037,NUCLEAR-STAR(signicial dan),tech,stream tech,16.2,16.00,0.20,0.20
+5366872,Phi(signicial dan),speed,low stream,3.1,Invalid: estDiff contains bound symbol (< or >),,
+5375029,498 Tokio(signicial dan),speed,low stream,3.8,Invalid: estDiff contains bound symbol (< or >),,
+5366871,The Wanderlast(signicial dan),speed,low stream,4.4,Invalid: estDiff contains bound symbol (< or >),,
+5366875,BREAK IT(signicial dan),speed,mid stream,5.8,Invalid: estDiff contains bound symbol (< or >),,
+5366877,Serendipity(signicial dan),speed,low stream,6.1,Invalid: estDiff contains bound symbol (< or >),,
+5366870,Eureka(signicial dan),speed,low stream,7.3,Invalid: estDiff contains bound symbol (< or >),,
+5366868,Angel Halo(signicial dan),speed,high stream,9.1,Invalid: estDiff contains bound symbol (< or >),,
+5366867,cold planet(signicial dan),speed,high stream,9.6,Invalid: estDiff contains bound symbol (< or >),,
+5366873,NightTheater(signicial dan),speed,high stream,10.7,Invalid: estDiff contains bound symbol (< or >),,
+5590323,Kyoumen no Nami(signicial dan),speed,mid stream,11.7,11.40,0.30,0.30
+5366863,DON'T GIVE A FUCK(signicial dan),speed,high stream,11.6,11.00,0.60,0.60
+5366874,Nirmiti(signicial dan),speed,high stream,12.9,12.60,0.30,0.30
+5366864,Tojita Sekai(signicial dan),speed,low stream,13.9,14.00,-0.10,0.10
+5590321,Nevereverland(signicial dan) x1.05,speed,mid stream,14.5,15.00,-0.50,0.50
+5366865,Disconnected Trance(signicial dan) x1.05,speed,mid stream,14.9,15.40,-0.50,0.50
+5375823,Kouyou(signicial dan),stamina,light jumpstream,3.1,Invalid: estDiff contains bound symbol (< or >),,
+5375826,Ouka Sange(signicial dan),stamina,light handstream,4.7,Invalid: estDiff contains bound symbol (< or >),,
+5375824,Blue Moon(signicial dan),stamina,dense handstream,5.9,Invalid: estDiff contains bound symbol (< or >),,
+5375829,Synthesis.(signicial dan),stamina,light handstream,6.4,Invalid: estDiff contains bound symbol (< or >),,
+5375819,Literal Crystal in Cyphisonia(signicial dan),stamina,dense jumpstream,7.6,Invalid: estDiff contains bound symbol (< or >),,
+5375831,CERCA-ESOTERICA(signicial dan),stamina,dense handstream,8.6,Invalid: estDiff contains bound symbol (< or >),,
+5375820,Kisaragi(signicial dan),stamina,dense jumpstream,9.8,Invalid: estDiff contains bound symbol (< or >),,
+5375825,Sendan Life(signicial dan),stamina,light jumpstream,10.7,10.60,0.10,0.10
+5590319,Chronicle(signicial dan),stamina,dense handstream,10.8,10.60,0.20,0.20
+5375822,The Limit Does Not Exist(signicial dan),stamina,dense jumpstream,12.2,11.60,0.60,0.60
+5375821,[ns](signicial dan),stamina,dense jumpstream,12.6,12.60,0.00,0.00
+5375845,Excuse Me But Could You Please RIP(signicial dan),stamina,dense handstream,13.8,14.00,-0.20,0.20
+5590316,Get into the Abyssmare(signicial dan) x1.2,stamina,dense handstream,14.2,14.00,0.20,0.20
+5375828,Juggernaut(signicial dan) x1.25,stamina,dense handstream,15,15.00,0.00,0.00
+5375817,LA MD(signicial dan) 0.9x,stamina,dense jumpstream,16.1,15.00,1.10,1.10
+5598212,SIVA(signicial dan),jack,high chordjack,17.2,17.40,-0.20,0.20
+5598211,silly-willy-nilly(signicial dan),tech,jack tech,16.6,16.60,0.00,0.00
+5600849,The Final Musical Dance I(signicial dan) x1.025,speed,low stream,17.3,17.40,-0.10,0.10
+5598209,EMPIRE OF FLAME(signicial) x1.15,stamina,dense handstream,17.4,15.60,1.80,1.80
+5680975,Heaven's Fall(signicial dan),jack,anchor chordjack,17.6,17.60,0.00,0.00
+5679828,Necrophagiatoast(signicial dan) x1.075,tech,stream tech,17.8,17.60,0.20,0.20
+5679829,Discharge(signicial) x1.15,speed,low stream,18,18.00,0.00,0.00
+5680977,It Has To Be This Way(signicial dan),stamina,dense handstream,18.3,17.60,0.70,0.70
+5253584,Life Garden(follow speed dan),speed,low stream,10.3,Invalid: estDiff contains bound symbol (< or >),,
+5253560,Elsa de la bibliotheque(follow speed dan),speed,mid stream,10.3,Invalid: estDiff contains bound symbol (< or >),,
+5253572,Chou Aoshiyounen no Tame no Choutan na Choukoten Choubukyoku(follow speed dan),speed,high stream,10.3,Invalid: estDiff contains bound symbol (< or >),,
+5253585,Hoshi ga Furanai Machi(follow speed dan),speed,high stream,10.4,Invalid: estDiff contains bound symbol (< or >),,
+5253561,Scarlet Tempest(follow speed dan),speed,mid stream,10.4,Invalid: estDiff contains bound symbol (< or >),,
+5253573,Otenba Renjyo(follow speed dan),speed,high stream,10.4,11.00,-0.60,0.60
+5253586,Flower Dance(follow speed dan),speed,high stream,11.2,Invalid: estDiff contains bound symbol (< or >),,
+5253562,Hymn(follow speed dan),speed,mid stream,11.2,11.00,0.20,0.20
+5253574,yo ma ya ko(follow speed dan),speed,high stream,11.2,Invalid: estDiff contains bound symbol (< or >),,
+5253587,The Crimson Empire(follow speed dan),speed,high stream,12.4,12.00,0.40,0.40
+5253563,Anhedonia(follow speed dan),speed,mid stream,12.4,13.00,-0.60,0.60
+5253575,Sora no Hajimaru Basho(follow speed dan),speed,high stream,12.4,12.40,0.00,0.00
+5253588,ntelecheia(follow speed dan),speed,high stream,13.4,12.60,0.80,0.80
+5253564,Imitation of fragrance(follow speed dan),speed,mid stream,13.4,12.60,0.80,0.80
+5253576,Brionac Lugh Lamhfhata(follow speed dan),speed,high stream,13.4,12.40,1.00,1.00
+5253589,End Time(follow speed dan),speed,high stream,13.6,13.00,0.60,0.60
+5253565,AIR(follow speed dan),speed,mid stream,13.6,13.40,0.20,0.20
+5253577,Akasha(follow speed dan),speed,high stream,13.6,13.00,0.60,0.60
+5253590,Metheus(follow speed dan),speed,high stream,14,13.40,0.60,0.60
+5253566,BABYLON(follow speed dan),speed,mid stream,14,14.40,-0.40,0.40
+5253578,weenywalker(follow speed dan),speed,low stream,14,14.00,0.00,0.00
+5253591,osanagokoro chi no uchouten(follow speed dan),speed,high stream,14.4,14.00,0.40,0.40
+5253567,hiiro gekka kyosakinoze(follow speed dan),speed,mid stream,14.4,14.00,0.40,0.40
+5253579,Dark Flight Dreamer(follow speed dan),speed,high stream,14.4,14.40,0.00,0.00
+5253592,Love Lie(follow speed dan),speed,high stream,14.6,14.00,0.60,0.60
+5253568,Palette(follow speed dan),speed,mid stream,14.6,14.60,0.00,0.00
+5253580,M-A(follow speed dan),speed,mid stream,14.6,14.40,0.20,0.20
+5253583,kori metsuno 135 shosetsu(follow speed dan),speed,high stream,15,15.00,0.00,0.00
+5253559,Nibelungen(follow speed dan),speed,mid stream,15,15.40,-0.40,0.40
+5253571,Fake(follow speed dan),speed,high stream,15,15.00,0.00,0.00
+5253594,Regression(follow speed dan),speed,high stream,15.4,15.40,0.00,0.00
+5253570,Kinki to Hiiro Gensou -The Primary Plasm-(follow speed dan),speed,mid stream,15.4,15.40,0.00,0.00
+5253582,Decoy(follow speed dan),speed,high stream,15.4,15.00,0.40,0.40
