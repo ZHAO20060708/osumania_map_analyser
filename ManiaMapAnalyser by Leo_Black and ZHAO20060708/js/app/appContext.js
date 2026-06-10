@@ -25,6 +25,7 @@ export const reworkStarEl = document.getElementById("rework-star");
 export const reworkDiffEl = document.getElementById("rework-diff");
 export const reworkRightCapsuleEl = document.getElementById("rework-right-capsule");
 export const reworkMetaEl = document.getElementById("rework-meta");
+export const reworkBlockEl = document.getElementById("rework");
 export const diffGraphWrapEl = document.getElementById("rework-diff-graph-wrap");
 export const diffGraphSvgEl = document.getElementById("rework-diff-graph");
 export const diffGraphFillEl = document.getElementById("rework-diff-graph-fill");
@@ -59,6 +60,9 @@ export const state = {
     lastBeatmapKey: "",
     lastBeatmapIdentity: "",
     lastBeatmapIdentitySource: "",
+    lastSongKey: "",
+    pendingChangeKind: "",
+    activeChangeKind: "",
     client: "",
     speedRate: 1.0,
     odFlag: null,
@@ -86,9 +90,13 @@ export const state = {
     hideCardDuringPlay: APP_CONFIG.defaults.hideCardDuringPlay,
     cardOpacity: APP_CONFIG.defaults.cardOpacity,
     cardRadius: APP_CONFIG.defaults.cardRadius,
+    cardBgBlur: APP_CONFIG.defaults.cardBgBlur,
     enableUpdateCheck: APP_CONFIG.defaults.enableUpdateCheck,
     hasAvailableUpdate: false,
     reverseCardExtendDirection: APP_CONFIG.defaults.reverseCardExtendDirection,
+    enableOsuTheme: APP_CONFIG.defaults.enableOsuTheme,
+    enableFloatingTriangles: APP_CONFIG.defaults.enableFloatingTriangles,
+    enableCoverArt: APP_CONFIG.defaults.enableCoverArt,
     vibroDetection: APP_CONFIG.defaults.vibroDetection,
     numericDifficulty: null,
     numericDifficultyHint: null,
@@ -160,8 +168,6 @@ const MOD_BIT_FLAGS = APP_CONFIG.mods.bitFlags;
 export const SORTED_KNOWN_MOD_CODES = [...KNOWN_MOD_CODES].sort((a, b) => b.length - a.length);
 export const MOD_BIT_FLAG_ENTRIES = Object.entries(MOD_BIT_FLAGS);
 
-export const PATTERN_BAR_GRADIENT = "linear-gradient(90deg, #4ec7ff 0%, #58f0d9 60%, #f6ef6b 100%)";
-
 export const {
     parseContentBarValue,
     parseSrTextValue,
@@ -184,14 +190,23 @@ export const {
     parseHideCardDuringPlayValue,
     parseCardOpacityValue,
     parseCardRadiusValue,
+    parseCardBgBlurValue,
     parseEnableUpdateCheckValue,
     parseReverseCardExtendDirectionValue,
+    parseEnableOsuThemeValue,
+    parseEnableFloatingTrianglesValue,
+    parseEnableCoverArtValue,
     parseSvDetectionValue,
     parseWsEndpointValue,
 } = createSettingsParsers(APP_CONFIG);
 
 export function getActiveContentBar() {
     return state.effectiveContentBar || state.contentBar;
+}
+
+export function contentBarShows(section) {
+    const active = getActiveContentBar();
+    return active === section || active === "Full";
 }
 
 export const GRAPH_VIEW_DEFS = [
@@ -217,12 +232,12 @@ export const GRAPH_VIEW_DEFS = [
         cursorDotEl: bodyGraphCursorDotEl,
         pauseMarkersEl: bodyGraphPauseMarkersEl,
         errorEl: bodyGraphErrorEl,
-        isEnabled: () => getActiveContentBar() === "Graph",
+        isEnabled: () => contentBarShows("Graph"),
     },
 ];
 
 export function hasAnyGraphModeEnabled() {
-    return state.diffText === "Graph" || getActiveContentBar() === "Graph";
+    return state.diffText === "Graph" || contentBarShows("Graph");
 }
 
 export function forEachGraphView(callback) {

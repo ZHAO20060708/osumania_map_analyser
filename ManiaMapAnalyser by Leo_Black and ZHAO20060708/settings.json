@@ -43,13 +43,14 @@
 		"uniqueID": "contentBar",
 		"type": "options",
 		"title": "Card Body Content",
-		"description": "Select what to show in the card body.",
+		"description": "Select what to show in the card body. Full shows Pattern, Etterna and Graph together.",
 		"options": [
 			"None",
 			"Auto",
 			"Pattern",
 			"Etterna",
-			"Graph"
+			"Graph",
+			"Full"
 		],
 		"value": "Auto"
 	},
@@ -110,6 +111,21 @@
 		"value": "Medium"
 	},
 	{
+		"uniqueID": "cardBgBlur",
+		"type": "options",
+		"title": "Content Background Blur",
+		"description": "Gaussian blur strength for the cover art behind the Pattern, Etterna and Graph blocks. Requires Cover Art Theme.",
+		"options": [
+			"Off",
+			"4px",
+			"8px",
+			"12px",
+			"16px",
+			"20px"
+		],
+		"value": "Off"
+	},
+	{
 		"uniqueID": "showModeTagCapsule",
 		"type": "checkbox",
 		"title": "Map Tag Capsule",
@@ -156,6 +172,38 @@
 		"description": "Anchor card bottom and extend upwards when card needs to extend.",
 		"options": [],
 		"value": false
+	},
+	{
+		"uniqueID": "hTheme",
+		"type": "header",
+		"title": "Theme & Effects",
+		"description": "Turn all three off for the clean Lite look; keep them on for the Full look.",
+		"options": [],
+		"value": ""
+	},
+	{
+		"uniqueID": "enableOsuTheme",
+		"type": "checkbox",
+		"title": "osu! Card Theme",
+		"description": "Use the osu!-style themed card: accent gradient background, static triangle texture, and themed content blocks. When off, the card falls back to the plain dark glass look.",
+		"options": [],
+		"value": true
+	},
+	{
+		"uniqueID": "enableFloatingTriangles",
+		"type": "checkbox",
+		"title": "Floating Triangles",
+		"description": "Show the animated triangles drifting up behind the card. Requires osu! Card Theme.",
+		"options": [],
+		"value": true
+	},
+	{
+		"uniqueID": "enableCoverArt",
+		"type": "checkbox",
+		"title": "Cover Art Theme",
+		"description": "Sample the beatmap background for the accent color and lay the cover behind the content blocks. Requires osu! Card Theme.",
+		"options": [],
+		"value": true
 	},
 	{
 		"uniqueID": "hFunctions",

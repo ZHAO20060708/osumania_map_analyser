@@ -1,6 +1,7 @@
 import {
     APP_CONFIG,
     bodyGraphWrapEl,
+    contentBarShows,
     dashboardEl,
     ettSkillBarsEl,
     getActiveContentBar,
@@ -9,11 +10,15 @@ import {
     parseAutoModeValue,
     parseCardOpacityValue,
     parseCardRadiusValue,
+    parseCardBgBlurValue,
     parseContentBarValue,
     parseDebugUseAmountValue,
     parseDiffTextValue,
     parseEnableEtternaRainbowBarsValue,
     parseEnableStatusMarqueeValue,
+    parseEnableOsuThemeValue,
+    parseEnableFloatingTrianglesValue,
+    parseEnableCoverArtValue,
     parseEnablePauseDetectionValue,
     parsePauseDetectionThresholdValue,
     parseEstimatorAlgorithmValue,
@@ -40,6 +45,7 @@ import {
     normalizeBooleanSetting,
     normalizeCardOpacityValue,
     normalizeCardRadiusValue,
+    normalizeCardBgBlurValue,
     normalizeContentBarValue,
     normalizeDiffTextValue,
     normalizeEtternaVersionValue,
@@ -60,6 +66,8 @@ import {
     refreshStatusRendering,
 } from "./hud.js";
 import { resolveAutoDisplayProfile } from "./modeLogic.js";
+import { applyCoverThemeForBeatmap, resetCoverTheme } from "./coverTheme.js";
+import { initTriangleField } from "./triangles.js";
 import { scheduleRecompute } from "./scheduler.js";
 import { runUpdateCheckIfDue, runUpdateCheckNow } from "./updateChecker.js";
 
@@ -78,19 +86,21 @@ function resolveRuntimeDisplayProfile(modeTag = state.currentModeTag || "Mix") {
 
 function updateContentBarVisibility() {
     const activeContentBar = getActiveContentBar();
+    const isFull = activeContentBar === "Full";
 
-    patternClustersEl.hidden = activeContentBar !== "Pattern";
-    ettSkillBarsEl.hidden = activeContentBar !== "Etterna";
+    patternClustersEl.hidden = !contentBarShows("Pattern");
+    ettSkillBarsEl.hidden = !contentBarShows("Etterna");
     if (bodyGraphWrapEl) {
-        bodyGraphWrapEl.hidden = activeContentBar !== "Graph";
+        bodyGraphWrapEl.hidden = !contentBarShows("Graph");
     }
 
-    mainCardEl.classList.toggle("bars-pattern", activeContentBar === "Pattern");
-    mainCardEl.classList.toggle("bars-etterna", activeContentBar === "Etterna");
-    mainCardEl.classList.toggle("bars-graph", activeContentBar === "Graph");
-    mainCardEl.classList.toggle("bars-none", activeContentBar === "None");
+    mainCardEl.classList.toggle("bars-full", isFull);
+    mainCardEl.classList.toggle("bars-pattern", !isFull && activeContentBar === "Pattern");
+    mainCardEl.classList.toggle("bars-etterna", !isFull && activeContentBar === "Etterna");
+    mainCardEl.classList.toggle("bars-graph", !isFull && activeContentBar === "Graph");
+    mainCardEl.classList.toggle("bars-none", !isFull && activeContentBar === "None");
 
-    if (activeContentBar !== "Etterna") {
+    if (!contentBarShows("Etterna")) {
         mainCardEl.classList.remove("bars-etterna-compact");
     }
 }
@@ -177,11 +187,14 @@ function applyVisualStyleSettings() {
 
     const opacity = opacityMap[state.cardOpacity] || opacityMap[APP_CONFIG.defaults.cardOpacity] || "0.95";
     const radius = radiusMap[state.cardRadius] || radiusMap[APP_CONFIG.defaults.cardRadius] || "16px";
+    // "Off" maps to 0px so the blur() filter is a no-op; any "<n>px" value passes through.
+    const bgBlur = (!state.cardBgBlur || state.cardBgBlur === "Off") ? "0px" : state.cardBgBlur;
     const shouldShowUpdateIcon = Boolean(state.enableUpdateCheck && state.hasAvailableUpdate);
 
     if (mainCardEl) {
         mainCardEl.style.setProperty("--card-opacity", opacity);
         mainCardEl.style.setProperty("--card-radius", radius);
+        mainCardEl.style.setProperty("--ma-cover-blur", bgBlur);
         mainCardEl.style.setProperty("--card-extend-origin", state.reverseCardExtendDirection ? "bottom" : "top");
         mainCardEl.classList.toggle("hide-title-icon", !shouldShowUpdateIcon);
     }
@@ -195,6 +208,55 @@ function applyVisualStyleSettings() {
         titleIconEl.style.display = shouldShowUpdateIcon ? "" : "none";
     }
 
+}
+
+// Reflect the three theme/effect toggles onto <html> classes. theme.css scopes
+// all its osu-skin / triangle / cover rules behind these classes, so flipping a
+// class is enough to switch the look live without re-rendering anything.
+function applyThemeEffectClasses() {
+    if (typeof document === "undefined") {
+        return;
+    }
+    const root = document.documentElement;
+    if (!root) {
+        return;
+    }
+    root.classList.toggle("ma-theme-osu", state.enableOsuTheme);
+    root.classList.toggle("ma-fx-triangles", state.enableOsuTheme && state.enableFloatingTriangles);
+    root.classList.toggle("ma-fx-cover", state.enableCoverArt);
+}
+
+export function applyEnableOsuThemeSetting(value) {
+    const next = normalizeBooleanSetting(value, APP_CONFIG.defaults.enableOsuTheme);
+    const changed = state.enableOsuTheme !== next;
+    state.enableOsuTheme = next;
+    applyThemeEffectClasses();
+    return changed;
+}
+
+export function applyEnableFloatingTrianglesSetting(value) {
+    const next = normalizeBooleanSetting(value, APP_CONFIG.defaults.enableFloatingTriangles);
+    const changed = state.enableFloatingTriangles !== next;
+    state.enableFloatingTriangles = next;
+    applyThemeEffectClasses();
+    return changed;
+}
+
+export function applyEnableCoverArtSetting(value) {
+    const next = normalizeBooleanSetting(value, APP_CONFIG.defaults.enableCoverArt);
+    const changed = state.enableCoverArt !== next;
+    state.enableCoverArt = next;
+    applyThemeEffectClasses();
+
+    if (!next) {
+        // Drop --ma-accent/--ma-cover back to the default osu pink and clear the
+        // cached identity so re-enabling re-extracts color for the current map.
+        resetCoverTheme();
+    } else if (changed && state.lastBeatmapIdentity) {
+        applyCoverThemeForBeatmap(state.lastBeatmapIdentity).catch(() => {});
+    }
+
+    return changed;
 }
 
 function getCurrentAppVersion() {
@@ -264,15 +326,13 @@ export function setRuntimeContentBar(contentBar) {
     const changed = state.contentBar !== nextBar;
     state.contentBar = nextBar;
 
-    const activeContentBar = getActiveContentBar();
-
-    if (activeContentBar !== "Pattern") {
+    if (!contentBarShows("Pattern")) {
         patternClustersEl.innerHTML = "";
     } else if (!patternClustersEl.innerHTML.trim()) {
         patternClustersEl.innerHTML = "<li class=\"cluster-item empty\">No data</li>";
     }
 
-    if (activeContentBar !== "Etterna") {
+    if (!contentBarShows("Etterna")) {
         ettSkillBarsEl.innerHTML = "";
     } else if (!ettSkillBarsEl.innerHTML.trim()) {
         ettSkillBarsEl.innerHTML = "<li class=\"ett-skill-item empty\">No data</li>";
@@ -295,11 +355,10 @@ export function setEffectiveContentBarForMap(contentBarOrNull) {
     const changed = state.effectiveContentBar !== next;
     state.effectiveContentBar = next;
 
-    const activeContentBar = getActiveContentBar();
-    if (activeContentBar !== "Pattern") {
+    if (!contentBarShows("Pattern")) {
         patternClustersEl.innerHTML = "";
     }
-    if (activeContentBar !== "Etterna") {
+    if (!contentBarShows("Etterna")) {
         ettSkillBarsEl.innerHTML = "";
     }
 
@@ -507,6 +566,14 @@ export function applyCardRadiusSetting(value) {
     return changed;
 }
 
+export function applyCardBgBlurSetting(value) {
+    const next = normalizeCardBgBlurValue(value) || APP_CONFIG.defaults.cardBgBlur;
+    const changed = state.cardBgBlur !== next;
+    state.cardBgBlur = next;
+    applyVisualStyleSettings();
+    return changed;
+}
+
 export function applyEnableUpdateCheckSetting(value) {
     const next = normalizeBooleanSetting(value, APP_CONFIG.defaults.enableUpdateCheck);
     const changed = state.enableUpdateCheck !== next;
@@ -589,9 +656,13 @@ export function setupSettingsCommandListener() {
         const hideCardDuringPlayChanged = applyIf("hideCardDuringPlay", applyHideCardDuringPlaySetting, parseHideCardDuringPlayValue(payload));
         const cardOpacityChanged = applyIf("cardOpacity", applyCardOpacitySetting, parseCardOpacityValue(payload));
         const cardRadiusChanged = applyIf("cardRadius", applyCardRadiusSetting, parseCardRadiusValue(payload));
+        const cardBgBlurChanged = applyIf("cardBgBlur", applyCardBgBlurSetting, parseCardBgBlurValue(payload));
         const enableUpdateCheckChanged = applyIf("enableUpdateCheck", applyEnableUpdateCheckSetting, parseEnableUpdateCheckValue(payload));
         const reverseCardDirectionChanged = applyIf("reverseCardExtendDirection", applyReverseCardExtendDirectionSetting, parseReverseCardExtendDirectionValue(payload));
         const svChanged = applyIf("useSvDetection", applyUseSvDetectionSetting, parseSvDetectionValue(payload));
+        const osuThemeChanged = applyIf("enableOsuTheme", applyEnableOsuThemeSetting, parseEnableOsuThemeValue(payload));
+        const floatingTrianglesChanged = applyIf("enableFloatingTriangles", applyEnableFloatingTrianglesSetting, parseEnableFloatingTrianglesValue(payload));
+        const coverArtChanged = applyIf("enableCoverArt", applyEnableCoverArtSetting, parseEnableCoverArtValue(payload));
 
         const legacyAutoMode = parseAutoModeValue(payload);
         if (legacyAutoMode && !isAutoDisplayEnabled()) {
@@ -619,8 +690,12 @@ export function setupSettingsCommandListener() {
             || hideCardDuringPlayChanged
             || cardOpacityChanged
             || cardRadiusChanged
+            || cardBgBlurChanged
             || enableUpdateCheckChanged
             || reverseCardDirectionChanged
+            || osuThemeChanged
+            || floatingTrianglesChanged
+            || coverArtChanged
             || svChanged;
 
         const recomputeNeeded = contentBarChanged
@@ -713,8 +788,12 @@ export async function loadSettings() {
         applyHideCardDuringPlaySetting(parseHideCardDuringPlayValue(source));
         applyCardOpacitySetting(parseCardOpacityValue(source));
         applyCardRadiusSetting(parseCardRadiusValue(source));
+        applyCardBgBlurSetting(parseCardBgBlurValue(source));
         applyEnableUpdateCheckSetting(parseEnableUpdateCheckValue(source));
         applyReverseCardExtendDirectionSetting(parseReverseCardExtendDirectionValue(source));
+        applyEnableOsuThemeSetting(parseEnableOsuThemeValue(source));
+        applyEnableFloatingTrianglesSetting(parseEnableFloatingTrianglesValue(source));
+        applyEnableCoverArtSetting(parseEnableCoverArtValue(source));
         applyUseSvDetectionSetting(parseSvDetectionValue(source));
     }
 
@@ -743,8 +822,12 @@ export async function loadSettings() {
             hideCardDuringPlay: APP_CONFIG.defaults.hideCardDuringPlay,
             cardOpacity: APP_CONFIG.defaults.cardOpacity,
             cardRadius: APP_CONFIG.defaults.cardRadius,
+            cardBgBlur: APP_CONFIG.defaults.cardBgBlur,
             enableUpdateCheck: APP_CONFIG.defaults.enableUpdateCheck,
             reverseCardExtendDirection: APP_CONFIG.defaults.reverseCardExtendDirection,
+            enableOsuTheme: APP_CONFIG.defaults.enableOsuTheme,
+            enableFloatingTriangles: APP_CONFIG.defaults.enableFloatingTriangles,
+            enableCoverArt: APP_CONFIG.defaults.enableCoverArt,
             useSvDetection: APP_CONFIG.defaults.useSvDetection,
         });
     }

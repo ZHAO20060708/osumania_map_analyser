@@ -42,7 +42,7 @@ function clearGraphScanEnter(view) {
         clearTimeout(view.scanEnterTimeoutId);
         view.scanEnterTimeoutId = 0;
     }
-    view.svgEl.classList.remove("scan-enter");
+    view.svgEl.classList.remove("scan-enter", "scan-enter-soft");
 }
 
 function triggerGraphScanEnter(view) {
@@ -51,13 +51,16 @@ function triggerGraphScanEnter(view) {
     }
     clearGraphScanEnter(view);
     view.svgEl.getBoundingClientRect();
-    view.svgEl.classList.add("scan-enter");
+    // 换歌做左→右的扫描揭示，换难度 / 改设置只做轻量交叉淡入，
+    // 让图表的入场和上方 star 区块的两套动画在观感上保持一致。
+    const scanClass = state.activeChangeKind === "song" ? "scan-enter" : "scan-enter-soft";
+    view.svgEl.classList.add(scanClass);
 
     view.scanEnterTimeoutId = setTimeout(() => {
         if (!view.svgEl) {
             return;
         }
-        view.svgEl.classList.remove("scan-enter");
+        view.svgEl.classList.remove("scan-enter", "scan-enter-soft");
         view.scanEnterTimeoutId = 0;
     }, GRAPH_SCAN_ENTER_DURATION_MS);
 }

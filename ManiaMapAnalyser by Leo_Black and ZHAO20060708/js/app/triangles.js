@@ -66,4 +66,37 @@ export function initTriangleField(container) {
     }
 
     field.appendChild(fragment);
+
+    // 三角从卡片底沿之下（bottom:-130px）一路升到卡片顶沿之上才循环无缝。
+    // 原版把升程写死 720px，正好够固定高度卡片；但 Full 模式卡片会变高，
+    // 写死值盖不到顶部，于是上半截始终空着。改成按卡片实测高度动态设
+    // --tri-rise（高度 + 起止缓冲），让任意卡片高度都能覆盖到顶。
+    trackFieldRise(field);
+}
+
+const TRI_RISE_BUFFER_PX = 180; // 起点 -130px + 顶部留白，确保两端都在裁剪区外
+
+function trackFieldRise(field) {
+    const card = field.closest(".main-card") || field.parentElement;
+    if (!card) {
+        return;
+    }
+
+    const updateRise = () => {
+        const height = Number(card.getBoundingClientRect().height) || 0;
+        if (height <= 0) {
+            return;
+        }
+        field.style.setProperty("--tri-rise", `${Math.round(height + TRI_RISE_BUFFER_PX)}px`);
+    };
+
+    updateRise();
+
+    if (typeof ResizeObserver === "function") {
+        const observer = new ResizeObserver(updateRise);
+        observer.observe(card);
+    } else if (typeof window !== "undefined") {
+        // 退路：没有 ResizeObserver 时，至少跟随窗口尺寸变化。
+        window.addEventListener("resize", updateRise);
+    }
 }
