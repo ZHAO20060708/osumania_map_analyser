@@ -83,7 +83,7 @@ export const APP_CONFIG = {
         companellaEtternaVersion: "0.74.0",
         pauseDetectionEnabled: true,
         pauseDetectionThresholdMs: 500,
-        enableEtternaRainbowBars: true,
+        enableEtternaRainbowBars: false,
         enableStatusMarquee: true,
         vibroDetection: true,
         disableVibroDetection: false,
