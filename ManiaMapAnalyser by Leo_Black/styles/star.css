@@ -68,7 +68,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 12px;
+    gap: 6px;
     min-width: 0;
 }
 
@@ -84,6 +84,16 @@
     gap: 4px;
 }
 
+.star-right-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    min-width: 0;
+    max-width: 56%;
+    width: 56%;
+    flex: 0 0 56%;
+}
+
 .star-right {
     text-align: right;
     display: grid;
@@ -91,9 +101,7 @@
     justify-items: end;
     margin-bottom: 2px;
     min-width: 0;
-    max-width: 56%;
-    width: 56%;
-    flex: 0 0 56%;
+    flex: 1 1 auto;
 }
 
 .star-subtitle {
@@ -177,4 +185,46 @@
     font-size: 24px;
     line-height: 1.2;
     font-weight: 700;
+}
+
+/* ---- star-tip: 5-dot RC difficulty indicator --------------------------------- */
+.star-tip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    flex: 0 0 auto;
+    align-self: center;
+    padding: 0 2px;
+}
+
+.star-dot {
+    display: block;
+    width: 3px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.32);
+    background: transparent;
+    transition:
+        background-color 260ms ease,
+        border-color 260ms ease,
+        box-shadow 260ms ease;
+}
+
+.star-dot.lit {
+    background: #f6fbff;
+    border-color: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 0 5px 1px rgba(246, 251, 255, 0.5);
+}
+
+/* osu! theme: dots follow --ma-accent */
+html.ma-theme-osu .star-dot {
+    border-color: color-mix(in srgb, var(--ma-accent) 28%, rgba(255, 255, 255, 0.3));
+}
+
+html.ma-theme-osu .star-dot.lit {
+    background: var(--ma-accent);
+    border-color: color-mix(in srgb, var(--ma-accent) 60%, white);
+    box-shadow: 0 0 6px 1px color-mix(in srgb, var(--ma-accent) 55%, transparent);
 }

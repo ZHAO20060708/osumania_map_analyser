@@ -12,6 +12,7 @@ import {
     reworkStarEl,
     STAR_BG_STOPS,
     STAR_TEXT_STOPS,
+    starTipEl,
     state,
 } from "./appContext.js";
 
@@ -230,6 +231,52 @@ function restartAnimationClass(element, className) {
     element.classList.add(className);
 }
 
+const RC_SUFFIX_LEVELS = {
+    "low": 1,
+    "mid/low": 2,
+    "mid": 3,
+    "mid/high": 4,
+    "high": 5,
+};
+
+const RC_SUFFIX_ORDER = Object.keys(RC_SUFFIX_LEVELS).sort((a, b) => b.length - a.length);
+
+function parseRcDifficultyLevel(diffText) {
+    if (!diffText || diffText === "-") {
+        return 0;
+    }
+
+    // For combined "RC || LN", take only the RC part (first line after formatDiffForDisplay split)
+    const rcPart = diffText.split("\n")[0].trim();
+    if (!rcPart) {
+        return 0;
+    }
+
+    // Check longer (more specific) suffixes first: "mid/low" and "mid/high"
+    // before the shorter "low", "mid", "high"
+    for (const suffix of RC_SUFFIX_ORDER) {
+        if (rcPart.endsWith(suffix)) {
+            return RC_SUFFIX_LEVELS[suffix];
+        }
+    }
+
+    return 0;
+}
+
+export function updateStarTipDots(diffText) {
+    if (!starTipEl) {
+        return;
+    }
+
+    const level = parseRcDifficultyLevel(diffText);
+    const dots = starTipEl.querySelectorAll(".star-dot");
+
+    dots.forEach((dot) => {
+        const dotLevel = Number(dot.dataset.level);
+        dot.classList.toggle("lit", dotLevel >= 1 && dotLevel <= level);
+    });
+}
+
 function estimateBodySkeletonItemCount(mode) {
     const isEtterna = mode === "etterna";
     const minimum = isEtterna ? (state.etternaTechnicalHidden ? 6 : 7) : 5;
@@ -352,6 +399,8 @@ export function setEstimateDifficultyText(value) {
     const swapClass = state.activeChangeKind === "song" ? "song-swap" : "diff-swap";
     void reworkDiffEl.offsetWidth;
     reworkDiffEl.classList.add(swapClass);
+
+    updateStarTipDots(nextText);
 }
 
 // 换歌时让整个 star 区块做一次明显的入场（淡入 + 上移 + 轻微放大），

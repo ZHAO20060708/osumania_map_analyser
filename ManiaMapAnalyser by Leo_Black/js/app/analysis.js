@@ -526,13 +526,14 @@ export async function fetchBeatmapFile(reason) {
                     renderEtternaSkillBars(ettResult?.values || {}, columnCount);
                 }
             } catch (error) {
+                const isKeycountError = /unsupported keycount/i.test(String(error?.message ?? ""));
                 if (showsEtterna) {
                     if (!(await waitForBodyRenderReady())) return;
-                    renderBodySectionError("Etterna", error.message);
+                    renderBodySectionError("Etterna", isKeycountError ? "Unsupported Keycount" : error.message);
                     state.etternaTechnicalHidden = false;
                     mainCardEl.classList.remove("bars-etterna-compact");
                 }
-                if (shouldReportEtternaError) {
+                if (shouldReportEtternaError && !isKeycountError) {
                     errors.push(`Etterna analyze failed: ${error.message}`);
                 }
             }
@@ -598,9 +599,7 @@ export async function fetchBeatmapFile(reason) {
                 }
             }
 
-            const rawDiffText = GRAPH_SUPPORTED_KEY_SET.has(rework.columnCount)
-                ? formatDiffForDisplay(resolvedEstDiff)
-                : "Unsupported Keys";
+            const rawDiffText = formatDiffForDisplay(resolvedEstDiff);
             const diffText = (Number.isFinite(resolvedNumericDifficulty) && resolvedNumericDifficulty >= 18.5)
                 ? "> Cloverwisp Theta high"
                 : rawDiffText;

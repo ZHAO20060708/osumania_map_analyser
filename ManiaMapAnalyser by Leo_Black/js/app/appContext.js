@@ -55,6 +55,7 @@ export const dashboardEl = document.querySelector(".dashboard");
 export const titleIconEl = document.querySelector(".title-icon");
 export const modeTagEl = document.getElementById("mode-tag");
 export const svTagEl = document.getElementById("sv-tag");
+export const starTipEl = document.getElementById("star-tip");
 
 export const state = {
     lastBeatmapKey: "",

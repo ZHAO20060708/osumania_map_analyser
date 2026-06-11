@@ -13,6 +13,7 @@ import {
     forEachGraphView,
     reworkDiffEl,
     reworkRightCapsuleEl,
+    starTipEl,
     state,
 } from "./appContext.js";
 import {
@@ -22,6 +23,7 @@ import {
     normalizeGraphSeries,
 } from "./graphMath.js";
 import { updatePauseCountVisibility } from "./hud.js";
+import { updateStarTipDots } from "./display.js";
 
 const GRAPH_SCAN_ENTER_DURATION_MS = 400;
 const GRAPH_LOADING_TEXT_CLASS = "star-graph-loading-text";
@@ -632,6 +634,12 @@ export function updateDiffTextVisibility() {
     });
     if (reworkRightCapsuleEl) {
         reworkRightCapsuleEl.hidden = !showRightCapsule;
+    }
+    if (starTipEl) {
+        starTipEl.hidden = !showDiffText;
+        if (showDiffText) {
+            updateStarTipDots(reworkDiffEl.textContent);
+        }
     }
 
     estDiffCaptionEl.hidden = mode === "None";
