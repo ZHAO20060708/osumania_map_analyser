@@ -698,6 +698,17 @@ export function formatDiffForDisplay(diffText) {
     return String(diffText).split("||").map((part) => part.trim()).join("\n");
 }
 
+export function renderFullModeSeparators(ettOverallValue) {
+    const sepEtterna = document.getElementById("sep-etterna");
+    if (!sepEtterna) return;
+
+    if (Number.isFinite(ettOverallValue)) {
+        sepEtterna.textContent = `Etterna | Overall: ${ettOverallValue.toFixed(2)}`;
+    } else {
+        sepEtterna.textContent = "Etterna | Overall: --";
+    }
+}
+
 export function formatMetadataStatus(metadata) {
     const artist = metadata.Artist || "Unknown Artist";
     const title = metadata.Title || "Unknown Title";

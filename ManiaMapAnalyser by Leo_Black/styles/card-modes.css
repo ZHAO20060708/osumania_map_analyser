@@ -32,7 +32,36 @@
 }
 
 .main-card.bars-full .body-graph-wrap {
-    margin: 0 auto 8px;
+    width: 100%;
+    margin: 0 auto 28px;
+}
+
+/* Full mode section separators — hr-like with centered text */
+.full-separator {
+    display: none;
+}
+
+.main-card.bars-full .full-separator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 12px;
+    font-family: "Outfit", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: color-mix(in srgb, var(--ma-accent) 40%, #8890a8);
+    white-space: nowrap;
+    opacity: 0.75;
+}
+
+.main-card.bars-full .full-separator::before,
+.main-card.bars-full .full-separator::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: color-mix(in srgb, var(--ma-accent) 22%, #4a5068);
+    border-radius: 1px;
 }
 
 .main-card.bars-pattern {

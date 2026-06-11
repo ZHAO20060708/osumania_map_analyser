@@ -128,7 +128,7 @@
 		"uniqueID": "enableCoverArt",
 		"type": "checkbox",
 		"title": "Cover Art Background",
-		"description": "[Requires Lazer Card Theme] Lay the beatmap's background behind the content blocks. ",
+		"description": "[Requires Lazer Card Theme] Lay the beatmap's background behind the content blocks. Suggested to set a custom background color if disabled.",
 		"options": [],
 		"value": true
 	},
@@ -136,23 +136,15 @@
 		"uniqueID": "customBackgroundColor",
 		"type": "color",
 		"title": "Custom Background Color",
-		"description": "[Requires Lazer Card Theme] Use a custom color instead of sampling the beatmap's background. Set to pure black with 0% opacity (#000000) to disable.",
+		"description": "[Requires Lazer Card Theme] Use a custom color instead of sampling the beatmap's background. Set to pure black (#000000) to disable.",
 		"options": [],
 		"value": "#000000"
-	},
-	{
-		"uniqueID": "customBackgroundPath",
-		"type": "text",
-		"title": "Custom Background Path",
-		"description": "[Requires Cover Art Background] Specify the path to a custom background image. Set to empty to use the beatmap's background image. Only supports absolute paths.",
-		"options": [],
-		"value": ""
 	},
 	{
 		"uniqueID": "enableEtternaRainbowBars",
 		"type": "checkbox",
 		"title": "Rainbow Bars",
-		"description": "Enable multi-color bars in Etterna mode.",
+		"description": "Enable multi-color bars in Etterna mode. Suggested to disable if Lazer theme is enabled.",
 		"options": [],
 		"value": false
 	},
@@ -215,7 +207,7 @@
 			"16px",
 			"20px"
 		],
-		"value": "Off"
+		"value": "4px"
 	},
 	{
 		"uniqueID": "cardRadius",

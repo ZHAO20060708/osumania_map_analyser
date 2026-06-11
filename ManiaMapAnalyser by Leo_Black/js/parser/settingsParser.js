@@ -195,6 +195,18 @@ export function normalizeBooleanSetting(value, fallback = false) {
     return Boolean(value);
 }
 
+export function normalizeCustomBackgroundColorValue(value) {
+    if (typeof value !== "string") {
+        return null;
+    }
+
+    if (/^#[0-9a-fA-F]{6}$/.test(value)) {
+        return value.toLowerCase();
+    }
+
+    return null;
+}
+
 export function extractSettingValue(settingsPayload, settingKey) {
     if (Array.isArray(settingsPayload)) {
         const item = settingsPayload.find((entry) => entry?.uniqueID === settingKey);
@@ -419,6 +431,12 @@ export function createSettingsParsers(appConfig) {
         return normalizeBooleanSetting(value, appConfig.defaults.enableCoverArt);
     }
 
+    function parseCustomBackgroundColorValue(settingsPayload) {
+        const value = extractSettingValue(settingsPayload, "customBackgroundColor");
+        const normalized = normalizeCustomBackgroundColorValue(value);
+        return normalized ?? "#000000";
+    }
+
     function parseCardOpacityValue(settingsPayload) {
         const value = extractSettingValue(settingsPayload, "cardOpacity");
         const normalized = normalizeCardOpacityValue(value);
@@ -535,6 +553,7 @@ export function createSettingsParsers(appConfig) {
         parseEnableOsuThemeValue,
         parseEnableFloatingTrianglesValue,
         parseEnableCoverArtValue,
+        parseCustomBackgroundColorValue,
         parseCardOpacityValue,
         parseCardRadiusValue,
         parseCardBgBlurValue,

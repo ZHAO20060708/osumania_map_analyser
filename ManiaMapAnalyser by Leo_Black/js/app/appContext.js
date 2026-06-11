@@ -97,6 +97,7 @@ export const state = {
     enableOsuTheme: APP_CONFIG.defaults.enableOsuTheme,
     enableFloatingTriangles: APP_CONFIG.defaults.enableFloatingTriangles,
     enableCoverArt: APP_CONFIG.defaults.enableCoverArt,
+    customBackgroundColor: APP_CONFIG.defaults.customBackgroundColor,
     vibroDetection: APP_CONFIG.defaults.vibroDetection,
     numericDifficulty: null,
     numericDifficultyHint: null,
@@ -196,6 +197,7 @@ export const {
     parseEnableOsuThemeValue,
     parseEnableFloatingTrianglesValue,
     parseEnableCoverArtValue,
+    parseCustomBackgroundColorValue,
     parseSvDetectionValue,
     parseWsEndpointValue,
 } = createSettingsParsers(APP_CONFIG);

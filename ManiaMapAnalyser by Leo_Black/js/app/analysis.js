@@ -44,6 +44,7 @@ import {
     showInterludeValue,
     showMsdValue,
     showNumericStarValue,
+    renderFullModeSeparators,
 } from "./display.js";
 import { modeTagFromLnRatio } from "./modeLogic.js";
 import {
@@ -698,6 +699,9 @@ export async function fetchBeatmapFile(reason) {
             Number(ettResult?.values?.Overall),
             Number(interludeStar),
         );
+
+        const overallValue = Number(ettResult?.values?.Overall);
+        renderFullModeSeparators(overallValue);
 
         if (isVibroMap && state.diffText === "Difficulty") {
             setEstimateDifficultyText("VIBRO");

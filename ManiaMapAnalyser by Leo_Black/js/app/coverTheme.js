@@ -8,9 +8,9 @@
 // analysis.js 取 .osu 文件用的 /files/beatmap/file 同源，所以 canvas 读像素
 // 不会被跨域污染；即便被污染（异源打开），也只是取色失败退默认，封面仍可显示。
 
-import { getSocketHost } from "./appContext.js";
+import { getSocketHost, state } from "./appContext.js";
 
-const DEFAULT_ACCENT = "#ff66aa";
+const DEFAULT_ACCENT = "#232f5d";
 
 // 取色用的缩略尺寸：越小越快，64 足够挑主色。
 const SAMPLE_SIZE = 64;
@@ -20,11 +20,20 @@ const QUANT_BITS = 4;
 let themeRequestSeq = 0;
 let lastThemedIdentity = "";
 
-/** 把当前主题恢复成默认 osu! 粉、清掉封面。 */
+/** 把当前主题恢复成默认（暗色玻璃）或保持自定义颜色、清掉封面。 */
 export function resetCoverTheme() {
     const root = document.documentElement;
-    root.style.setProperty("--ma-accent", DEFAULT_ACCENT);
-    root.style.removeProperty("--ma-cover");
+    // If customBackgroundColor is active, keep it. Otherwise remove --ma-accent
+    // so the :root default or osu theme takes over, effectively falling back
+    // to dark glass style when cover art is off.
+    if (state.customBackgroundColor && state.customBackgroundColor !== "#000000") {
+        // Keep custom color — just remove cover image
+        root.style.removeProperty("--ma-cover");
+    } else {
+        // No custom color: remove accent to fall back to dark glass / osu default
+        root.style.removeProperty("--ma-accent");
+        root.style.removeProperty("--ma-cover");
+    }
     root.classList.remove("ma-has-cover");
     lastThemedIdentity = "";
 }
@@ -71,6 +80,11 @@ export async function applyCoverThemeForBeatmap(identity) {
 
     if (seq !== themeRequestSeq) {
         return;
+    }
+
+    // If customBackgroundColor is active, use it instead of the extracted accent
+    if (state.customBackgroundColor && state.customBackgroundColor !== "#000000") {
+        accent = state.customBackgroundColor;
     }
 
     const root = document.documentElement;

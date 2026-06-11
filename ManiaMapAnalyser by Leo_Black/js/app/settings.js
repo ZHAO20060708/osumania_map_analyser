@@ -19,6 +19,7 @@ import {
     parseEnableOsuThemeValue,
     parseEnableFloatingTrianglesValue,
     parseEnableCoverArtValue,
+    parseCustomBackgroundColorValue,
     parseEnablePauseDetectionValue,
     parsePauseDetectionThresholdValue,
     parseEstimatorAlgorithmValue,
@@ -103,6 +104,11 @@ function updateContentBarVisibility() {
     if (!contentBarShows("Etterna")) {
         mainCardEl.classList.remove("bars-etterna-compact");
     }
+
+    const separatorEls = document.querySelectorAll(".full-separator");
+    separatorEls.forEach(el => {
+        el.hidden = !isFull;
+    });
 }
 
 let cardHeightTransitionTimerId = 0;
@@ -255,6 +261,20 @@ export function applyEnableCoverArtSetting(value) {
     } else if (changed && state.lastBeatmapIdentity) {
         applyCoverThemeForBeatmap(state.lastBeatmapIdentity).catch(() => {});
     }
+
+    return changed;
+}
+
+export function applyCustomBackgroundColorSetting(value) {
+    const next = parseCustomBackgroundColorValue([{ uniqueID: "customBackgroundColor", value: value }]);
+    const changed = state.customBackgroundColor !== next;
+    state.customBackgroundColor = next;
+
+    const root = document.documentElement;
+    if (next !== "#000000") {
+        root.style.setProperty("--ma-accent", next);
+    }
+    // When #000000, do NOT override — let coverTheme auto-sampling take over
 
     return changed;
 }
@@ -663,6 +683,7 @@ export function setupSettingsCommandListener() {
         const osuThemeChanged = applyIf("enableOsuTheme", applyEnableOsuThemeSetting, parseEnableOsuThemeValue(payload));
         const floatingTrianglesChanged = applyIf("enableFloatingTriangles", applyEnableFloatingTrianglesSetting, parseEnableFloatingTrianglesValue(payload));
         const coverArtChanged = applyIf("enableCoverArt", applyEnableCoverArtSetting, parseEnableCoverArtValue(payload));
+        const customColorChanged = applyIf("customBackgroundColor", applyCustomBackgroundColorSetting, parseCustomBackgroundColorValue(payload));
 
         const legacyAutoMode = parseAutoModeValue(payload);
         if (legacyAutoMode && !isAutoDisplayEnabled()) {
@@ -696,6 +717,7 @@ export function setupSettingsCommandListener() {
             || osuThemeChanged
             || floatingTrianglesChanged
             || coverArtChanged
+            || customColorChanged
             || svChanged;
 
         const recomputeNeeded = contentBarChanged
@@ -794,6 +816,7 @@ export async function loadSettings() {
         applyEnableOsuThemeSetting(parseEnableOsuThemeValue(source));
         applyEnableFloatingTrianglesSetting(parseEnableFloatingTrianglesValue(source));
         applyEnableCoverArtSetting(parseEnableCoverArtValue(source));
+        applyCustomBackgroundColorSetting(parseCustomBackgroundColorValue(source));
         applyUseSvDetectionSetting(parseSvDetectionValue(source));
     }
 
@@ -828,6 +851,7 @@ export async function loadSettings() {
             enableOsuTheme: APP_CONFIG.defaults.enableOsuTheme,
             enableFloatingTriangles: APP_CONFIG.defaults.enableFloatingTriangles,
             enableCoverArt: APP_CONFIG.defaults.enableCoverArt,
+            customBackgroundColor: APP_CONFIG.defaults.customBackgroundColor,
             useSvDetection: APP_CONFIG.defaults.useSvDetection,
         });
     }
