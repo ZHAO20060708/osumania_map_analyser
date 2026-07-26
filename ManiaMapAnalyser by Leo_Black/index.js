@@ -1,6 +1,6 @@
 ﻿import { initialize } from "./js/app/main.js";
 
-const _VERSION = "1.6.2";
+const _VERSION = "1.6.3";
 
 if (typeof window !== "undefined") {
 	window.__MMA_VERSION = _VERSION;
@@ -21,5 +21,4 @@ async function boot() {
 }
 
 boot();
-
 
